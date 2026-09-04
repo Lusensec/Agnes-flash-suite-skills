@@ -1,4 +1,4 @@
-# Agnes 2.5 Flash 全能力套件
+# Agnes 2.5 Flash 系列全能力套件
 
 ## 安装 Skill
 
