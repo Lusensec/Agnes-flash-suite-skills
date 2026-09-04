@@ -78,29 +78,32 @@ agnes-2.5-flash-suite/
 ├── SKILL.md                           # Skill 主文档
 │
 ├── agnes-2.5-flash/                   # 对话模型
-│   ├── SKILL.md / README.md
+│   ├── SKILL.md                       # 对话模型详细说明
+│   ├── README.md                      # 对话模型简介
 │   └── examples/
-│       ├── basic-chat.sh
-│       ├── image-understanding.sh
-│       ├── tool-calling.sh
-│       └── thinking-mode.sh
+│       ├── basic-chat.sh              # 基础聊天示例
+│       ├── image-understanding.sh     # 图像理解示例
+│       ├── tool-calling.sh            # 工具调用示例
+│       └── thinking-mode.sh           # Thinking 模式示例
 │
 ├── agnes-image-2.5-flash/             # 图像生成
-│   ├── SKILL.md / README.md
+│   ├── SKILL.md                       # 图像生成详细说明
+│   ├── README.md                      # 图像生成简介
 │   └── examples/
-│       ├── text-to-image.sh
-│       ├── text-to-image-base64.sh
-│       ├── image-to-image.sh
-│       └── multi-image-combine.sh
+│       ├── text-to-image.sh           # 文生图（URL）示例
+│       ├── text-to-image-base64.sh    # 文生图（Base64）示例
+│       ├── image-to-image.sh          # 图生图示例
+│       └── multi-image-combine.sh     # 多图合成示例
 │
 └── agnes-video-2.5-flash/             # 视频生成
-    ├── SKILL.md / README.md
+    ├── SKILL.md                       # 视频生成详细说明
+    ├── README.md                      # 视频生成简介
     └── examples/
-        ├── text-to-video.sh
-        ├── keyframe-video.sh
-        ├── image-reference.sh
-        ├── audio-reference.sh
-        └── query-video.sh
+        ├── text-to-video.sh           # 文生视频示例
+        ├── keyframe-video.sh          # 首尾帧控制示例
+        ├── image-reference.sh         # 图片参考示例
+        ├── audio-reference.sh         # 音频参考示例
+        └── query-video.sh             # 查询结果示例
 ```
 
 ## 相关文档
