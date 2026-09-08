@@ -1,11 +1,39 @@
 # Agnes Flash 系列全能力套件
 
-## 安装 Skill
+> **灵活使用方式：** 本套件既可整体安装，也可单独提取任意子目录作为独立 Skill 使用。
 
-给 Agent 指令：
+## 安装方式
+
+### 方式一：整体安装（推荐）
+
+克隆整个仓库，Agent 可调用所有四种模型能力：
 
 ```
 请安装 Agnes AI Skill：https://github.com/Lusensec/agnes-flash-suite-skills
+```
+
+### 方式二：单独安装（按需选择）
+
+每个子目录都是**自包含的独立 Skill**，只保留需要的功能。从 GitHub 下载对应子目录，放入 Agent 的 skills 目录即可。
+
+| 子 Skill | 目录名 | 触发词 | 说明 |
+|----------|--------|--------|------|
+| agnes-3.0-flash | `agnes-3.0-flash/` | agent、工具调用、3.0、thinking | Agent 编程/工具编排 |
+| agnes-2.5-flash | `agnes-2.5-flash/` | 对话、聊天、图像理解、tool calling | 通用对话/推理/Vision |
+| agnes-2.5-image-flash | `agnes-2.5-image-flash/` | 生图、图像生成、文生图、图生图 | 图像创作 |
+| agnes-2.5-video-flash | `agnes-2.5-video-flash/` | 视频生成、文生视频、首尾帧 | 视频制作 |
+
+**示例：单独使用图像生成 Skill**
+
+```bash
+# 从 GitHub 下载单个子目录
+git clone https://github.com/Lusensec/agnes-flash-suite-skills.git
+cp -r agnes-flash-suite-skills/agnes-2.5-image-flash ~/your-skills/
+
+# 在该目录下配置 .env
+cp agnes-2.5-image-flash/.env.example agnes-2.5-image-flash/.env
+# 编辑 .env 填入 API Key，然后直接使用
+python agnes-2.5-image-flash/examples/text-to-image.py
 ```
 
 ## 配置 API Key

@@ -15,6 +15,10 @@ description: |
 
 # Agnes Flash 全能力套件
 
+> **灵活使用：** 本套件可整体安装，也可单独提取任意子目录（如 `agnes-2.5-image-flash/`）作为独立 Skill 使用。每个子 Skill 自包含 `SKILL.md` + `examples/*.py`，无需依赖其他模块。
+
+# Agnes Flash 全能力套件
+
 ## 概述
 
 Agnes Flash 套件是一个多功能 AI 能力平台，整合了四种核心模型能力：
