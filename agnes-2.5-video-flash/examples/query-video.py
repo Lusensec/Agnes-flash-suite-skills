@@ -10,6 +10,14 @@ import time
 import urllib.request
 import os
 
+# 加载 .env 文件（优先读当前目录）
+sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "..", "utils"))
+try:
+    import load_env as env_loader
+    env_loader.load_env_file()
+except Exception:
+    pass
+
 VIDEO_ID = sys.argv[1] if len(sys.argv) > 1 else None
 API_KEY = sys.argv[2] if len(sys.argv) > 2 else os.environ.get("AGNESAI_API_KEY", "your-api-key-here")
 

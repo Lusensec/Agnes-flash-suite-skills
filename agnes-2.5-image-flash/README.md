@@ -1,6 +1,6 @@
 # Agnes Image 2.5 Flash Skill
 
-这是一个用于生成图像的 AI 模型技能，基于 Agnes AI 的 Image 2.5 Flash 模型。
+这是一个用于生成图像的 AI 模型 Skill，基于 Agnes AI 的 Image 2.5 Flash 模型。
 
 ## 功能特性
 
@@ -16,39 +16,54 @@
 ### 1. 设置 API Key
 
 ```bash
-export AGNES_API_KEY="sk-..."
+export AGNESAI_API_KEY="sk-..."
 ```
+
+> 获取 API Key：https://platform.agnes-ai.cn
 
 ### 2. 文生图
 
-```bash
-curl -X POST "https://api.agnes-ai.cn/v1/images/generations" \
-  -H "Authorization: Bearer $AGNES_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "agnes-image-2.5-flash",
-    "prompt": "A luminous floating city above a misty canyon at sunrise",
-    "size": "2K",
-    "ratio": "16:9"
-  }'
+```python
+# 运行 python examples/text-to-image.py
+import json, urllib.request, os
+API_KEY = os.environ.get("AGNESAI_API_KEY")
+resp = urllib.request.urlopen(urllib.request.Request(
+    "https://api.agnes-ai.cn/v1/images/generations",
+    data=json.dumps({
+        "model": "agnes-image-2.5-flash",
+        "prompt": "A luminous floating city above a misty canyon at sunrise",
+        "size": "2K",
+        "ratio": "16:9",
+        "extra_body": {"response_format": "url"}
+    }).encode(),
+    headers={"Authorization": f"Bearer {API_KEY}", "Content-Type": "application/json"},
+    method="POST"
+)).read()
+print(json.loads(resp)["data"][0]["url"])
 ```
 
 ### 3. 图生图
 
-```bash
-curl -X POST "https://api.agnes-ai.cn/v1/images/generations" \
-  -H "Authorization: Bearer $AGNES_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "agnes-image-2.5-flash",
-    "prompt": "Transform to cyberpunk style",
-    "size": "2K",
-    "ratio": "16:9",
-    "extra_body": {
-      "image": ["https://example.com/input.png"],
-      "response_format": "url"
-    }
-  }'
+```python
+# 运行 python examples/image-to-image.py [输入图片URL]
+import json, urllib.request, os
+API_KEY = os.environ.get("AGNESAI_API_KEY")
+resp = urllib.request.urlopen(urllib.request.Request(
+    "https://api.agnes-ai.cn/v1/images/generations",
+    data=json.dumps({
+        "model": "agnes-image-2.5-flash",
+        "prompt": "Transform to cyberpunk style",
+        "size": "2K",
+        "ratio": "16:9",
+        "extra_body": {
+            "image": ["https://example.com/input.png"],
+            "response_format": "url"
+        }
+    }).encode(),
+    headers={"Authorization": f"Bearer {API_KEY}", "Content-Type": "application/json"},
+    method="POST"
+)).read()
+print(json.loads(resp)["data"][0]["url"])
 ```
 
 ## 使用场景
@@ -66,6 +81,19 @@ curl -X POST "https://api.agnes-ai.cn/v1/images/generations" \
 - 当前限时免费
 - 原价：¥0.07-0.16/张（按尺寸）
 
-## 文档
+## 文件结构
 
-详见 [SKILL.md](./SKILL.md)
+```
+agnes-2.5-image-flash/
+├── SKILL.md               # 详细说明文档
+├── README.md              # 本文件
+└── examples/
+    ├── text-to-image.py       # 文生图（URL 输出）
+    ├── text-to-image-base64.py # 文生图（Base64 输出）
+    ├── image-to-image.py      # 图生图
+    └── multi-image-combine.py # 多图合成
+```
+
+## 相关文档
+
+- [Agnes Image 2.5 Flash 官方文档](https://agnes-ai.cn/zh-Hans/docs/agnes-image-25-flash)
