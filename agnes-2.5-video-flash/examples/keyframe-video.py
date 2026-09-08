@@ -11,13 +11,8 @@ import time
 import urllib.request
 import os
 
-# 加载 .env 文件（优先读当前目录）
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "..", "..", "utils"))
-try:
-    import load_env as env_loader
-    env_loader.load_env_file()
-except Exception:
-    pass
+import load_env
+load_env.load_env()
 
 API_KEY = os.environ.get("AGNESAI_API_KEY", "your-api-key-here")
 BASE_URL = "https://api.agnes-ai.cn/v1"
