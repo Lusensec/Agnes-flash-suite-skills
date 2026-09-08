@@ -116,18 +116,29 @@ export AGNESAI_API_KEY=sk-你的实际API Key
 
 ## 快速开始
 
-所有示例脚本均位于各子 Skill 的 `examples/` 目录，直接运行即可调用 API：
+所有示例脚本均位于各子 Skill 的 `examples/` 目录，支持命令行参数传入用户内容：
 
 ```bash
-# 文生图
-python agnes-2.5-image-flash/examples/text-to-image.py
+# 文生图（可选传提示词、尺寸、比例）
+python agnes-2.5-image-flash/examples/text-to-image.py "一只可爱的田园犬在稻田边" "2K" "16:9"
 
-# 图像理解（可选传图片 URL 参数）
+# 图生图（可选传输入图片URL、提示词）
+python agnes-2.5-image-flash/examples/image-to-image.py https://example.com/input.png "转换为赛博朋克风格"
+
+# 图像理解（可选传图片URL）
 python agnes-2.5-flash/examples/image-understanding.py https://example.com/image.jpg
 
-# 文生视频
-python agnes-2.5-video-flash/examples/text-to-video.py
+# 基础聊天（可选传用户问题）
+python agnes-2.5-flash/examples/basic-chat.py "用 Python 写一个快速排序算法"
+
+# 文生视频（可选传提示词）
+python agnes-2.5-video-flash/examples/text-to-video.py "小猫在客厅里追逐激光笔"
+
+# 首尾帧视频（可选传首帧URL、尾帧URL、提示词）
+python agnes-2.5-video-flash/examples/keyframe-video.py https://example.com/first.png https://example.com/last.png "人物转身走向窗边"
 ```
+
+> 不传参数时使用默认演示内容，方便快速体验。
 
 ## 文件结构
 
