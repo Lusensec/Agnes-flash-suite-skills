@@ -1,5 +1,5 @@
 ---
-name: agnes-flash
+name: agnes-2.5-flash
 description: |
   Agnes 2.5 Flash 对话模型 Skill（模型 ID: agnes-2.5-flash）。
   支持聊天补全、图像理解、工具调用、Thinking 模式和流式输出。

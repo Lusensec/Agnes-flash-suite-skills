@@ -7,8 +7,8 @@ description: |
   子 Skill 列表：
   - agnes-3.0-flash (Agent 编程/工具编排/可信交付)
   - agnes-2.5-flash (对话/推理/图像理解)
-  - agnes-image-2.5-flash (文生图/图生图/多图合成)
-  - agnes-video-2.5-flash (文生视频/首尾帧/图片参考)
+  - agnes-2.5-image-flash (文生图/图生图/多图合成)
+  - agnes-2.5-video-flash (文生视频/首尾帧/图片参考)
   
   触发词：agnes、AI助手、聊天、生图、图像生成、视频生成、文生视频、图片理解、工具调用、thinking、agent、3.0
 ---
@@ -110,7 +110,7 @@ curl -X POST "https://api.agnes-ai.cn/v1/chat/completions" \
   }'
 ```
 
-**文档**: [agnes-flash/SKILL.md](./agnes-flash/SKILL.md)
+**文档**: [agnes-2.5-flash/SKILL.md](./agnes-2.5-flash/SKILL.md)
 
 ---
 
@@ -155,7 +155,7 @@ curl -X POST "https://api.agnes-ai.cn/v1/images/generations" \
   }'
 ```
 
-**文档**: [agnes-image-flash/SKILL.md](./agnes-image-flash/SKILL.md)
+**文档**: [agnes-2.5-image-flash/SKILL.md](./agnes-2.5-image-flash/SKILL.md)
 
 ---
 
@@ -204,7 +204,7 @@ curl "https://api.agnes-ai.cn/agnesapi?video_id=VIDEO_ID&model_name=agnes-video-
   -H "Authorization: Bearer YOUR_API_KEY"
 ```
 
-**文档**: [agnes-video-flash/SKILL.md](./agnes-video-flash/SKILL.md)
+**文档**: [agnes-2.5-video-flash/SKILL.md](./agnes-2.5-video-flash/SKILL.md)
 
 ---
 
@@ -316,7 +316,7 @@ agnes-flash-suite/
 │       ├── image-understanding.sh
 │       ├── tool-calling.sh
 │       └── thinking-mode.sh
-├── agnes-flash/                      # 对话模型子 Skill
+├── agnes-2.5-flash/                  # 对话模型子 Skill
 │   ├── SKILL.md
 │   ├── README.md
 │   └── examples/
@@ -324,7 +324,7 @@ agnes-flash-suite/
 │       ├── image-understanding.sh
 │       ├── tool-calling.sh
 │       └── thinking-mode.sh
-├── agnes-image-flash/                # 图像生成子 Skill
+├── agnes-2.5-image-flash/            # 图像生成子 Skill
 │   ├── SKILL.md
 │   ├── README.md
 │   └── examples/
@@ -332,7 +332,7 @@ agnes-flash-suite/
 │       ├── text-to-image-base64.sh
 │       ├── image-to-image.sh
 │       └── multi-image-combine.sh
-└── agnes-video-flash/                # 视频生成子 Skill
+└── agnes-2.5-video-flash/            # 视频生成子 Skill
     ├── SKILL.md
     ├── README.md
     └── examples/

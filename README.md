@@ -102,7 +102,7 @@ agnes-flash-suite/
 │       ├── tool-calling.sh            # 工具调用示例
 │       └── thinking-mode.sh           # Thinking 模式示例
 │
-├── agnes-flash/                       # 对话模型（agnes-2.5-flash）
+├── agnes-2.5-flash/                   # 对话模型
 │   ├── SKILL.md                       # 对话模型详细说明
 │   ├── README.md                      # 对话模型简介
 │   └── examples/
@@ -111,7 +111,7 @@ agnes-flash-suite/
 │       ├── tool-calling.sh            # 工具调用示例
 │       └── thinking-mode.sh           # Thinking 模式示例
 │
-├── agnes-image-flash/                 # 图像生成（agnes-image-2.5-flash）
+├── agnes-2.5-image-flash/             # 图像生成（模型 ID: agnes-image-2.5-flash）
 │   ├── SKILL.md                       # 图像生成详细说明
 │   ├── README.md                      # 图像生成简介
 │   └── examples/
@@ -120,7 +120,7 @@ agnes-flash-suite/
 │       ├── image-to-image.sh          # 图生图示例
 │       └── multi-image-combine.sh     # 多图合成示例
 │
-└── agnes-video-flash/                 # 视频生成（agnes-video-2.5-flash）
+└── agnes-2.5-video-flash/             # 视频生成（模型 ID: agnes-video-2.5-flash）
     ├── SKILL.md                       # 视频生成详细说明
     ├── README.md                      # 视频生成简介
     └── examples/

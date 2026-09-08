@@ -1,5 +1,5 @@
 ---
-name: agnes-image-flash
+name: agnes-2.5-image-flash
 description: |
   Agnes Image 2.5 Flash 图像生成 Skill（模型 ID: agnes-image-2.5-flash）。
   支持文生图、图生图和多图合成工作流，整体能力全面超过旧版本。
