@@ -2,14 +2,14 @@
 """
 音频参考示例
 使用 agnes-video-2.5-flash 生成视频（音频作为参考）
-用法：python audio-reference.py [参考音频URL]
+用法：python audio-reference.py [参考音频URL] [提示词]
 """
 
 import json
+import os
 import sys
 import time
 import urllib.request
-import os
 
 import load_env
 load_env.load_env()
@@ -19,13 +19,15 @@ BASE_URL = "https://api.agnes-ai.cn/v1"
 POLL_URL = "https://api.agnes-ai.cn/agnesapi"
 
 AUDIO_URL = sys.argv[1] if len(sys.argv) > 1 else "https://example.com/reference-audio.mp3"
+PROMPT = sys.argv[2] if len(sys.argv) > 2 else "以 <Audio 1> 的节奏和环境氛围作为参考，生成电影感夜间驾驶画面"
 
 print("🎬 提交音频参考视频请求...")
-print(f"🎵 参考音频：{AUDIO_URL}")
+print(f"  参考音频: {AUDIO_URL}")
+print(f"  提示词: {PROMPT}")
 
 payload = {
     "model": "agnes-video-2.5-flash",
-    "prompt": "以 <Audio 1> 的节奏和环境氛围作为参考，生成电影感夜间驾驶画面",
+    "prompt": PROMPT,
     "seconds": "5",
     "mode": "reference",
     "size": "720P",

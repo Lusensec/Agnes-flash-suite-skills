@@ -2,7 +2,14 @@
 """
 文生视频示例
 使用 agnes-video-2.5-flash 生成视频
+用法：python text-to-video.py [提示词]
 """
+
+import json
+import os
+import sys
+import time
+import urllib.request
 
 import load_env
 load_env.load_env()
@@ -11,11 +18,14 @@ API_KEY = os.environ.get("AGNESAI_API_KEY", "your-api-key-here")
 BASE_URL = "https://api.agnes-ai.cn/v1"
 POLL_URL = "https://api.agnes-ai.cn/agnesapi"
 
+PROMPT = sys.argv[1] if len(sys.argv) > 1 else "雨后的未来城市街道，霓虹灯倒映在地面，一辆银色跑车缓慢驶过，电影级运镜，自然环境声"
+
 print("🎬 提交文生视频请求...")
+print(f"  提示词: {PROMPT}")
 
 payload = {
     "model": "agnes-video-2.5-flash",
-    "prompt": "雨后的未来城市街道，霓虹灯倒映在地面，一辆银色跑车缓慢驶过，电影级运镜，自然环境声",
+    "prompt": PROMPT,
     "seconds": "5",
     "mode": "text",
     "size": "720P",

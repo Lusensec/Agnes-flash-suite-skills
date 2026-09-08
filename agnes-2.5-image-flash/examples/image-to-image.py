@@ -2,7 +2,7 @@
 """
 图生图示例 - URL 输出
 使用 agnes-image-2.5-flash 进行图像编辑/风格迁移
-用法：python image-to-image.py [输入图片URL]
+用法：python image-to-image.py [输入图片URL] [提示词]
 """
 
 import json
@@ -18,13 +18,15 @@ API_KEY = os.environ.get("AGNESAI_API_KEY", "your-api-key-here")
 BASE_URL = "https://api.agnes-ai.cn/v1"
 
 INPUT_IMAGE = sys.argv[1] if len(sys.argv) > 1 else "https://example.com/input-image.png"
+PROMPT = sys.argv[2] if len(sys.argv) > 2 else "Transform the scene into a rain-soaked cyberpunk night with neon reflections while preserving the original composition"
 
-print("🎨 提交图生图请求（URL 输出）...")
-print(f"📷 输入图片：{INPUT_IMAGE}")
+print("🎨 提交图生图请求...")
+print(f"  输入图片: {INPUT_IMAGE}")
+print(f"  提示词: {PROMPT}")
 
 payload = {
     "model": "agnes-image-2.5-flash",
-    "prompt": "Transform the scene into a rain-soaked cyberpunk night with neon reflections while preserving the original composition",
+    "prompt": PROMPT,
     "size": "2K",
     "ratio": "16:9",
     "extra_body": {

@@ -2,6 +2,7 @@
 """
 文生图示例 - URL 输出
 使用 agnes-image-2.5-flash 生成图像
+用法：python text-to-image.py [提示词] [尺寸] [比例]
 """
 
 import json
@@ -16,13 +17,20 @@ load_env.load_env()
 API_KEY = os.environ.get("AGNESAI_API_KEY", "your-api-key-here")
 BASE_URL = "https://api.agnes-ai.cn/v1"
 
-print("🎨 提交文生图请求（URL 输出）...")
+# 从命令行参数读取（可选），否则使用默认值
+PROMPT = sys.argv[1] if len(sys.argv) > 1 else "A luminous floating city above a misty canyon at sunrise, cinematic realism, wide angle, rich architectural details, soft golden light, high visual density"
+SIZE = sys.argv[2] if len(sys.argv) > 2 else "2K"
+RATIO = sys.argv[3] if len(sys.argv) > 3 else "16:9"
+
+print(f"🎨 提交文生图请求...")
+print(f"  提示词: {PROMPT}")
+print(f"  尺寸: {SIZE}, 比例: {RATIO}")
 
 payload = {
     "model": "agnes-image-2.5-flash",
-    "prompt": "A luminous floating city above a misty canyon at sunrise, cinematic realism, wide angle, rich architectural details, soft golden light, high visual density",
-    "size": "2K",
-    "ratio": "16:9",
+    "prompt": PROMPT,
+    "size": SIZE,
+    "ratio": RATIO,
     "extra_body": {"response_format": "url"}
 }
 

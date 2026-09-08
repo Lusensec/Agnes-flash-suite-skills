@@ -2,12 +2,14 @@
 """
 文生图示例 - Base64 输出
 使用 agnes-image-2.5-flash 生成图像（返回 Base64）
+用法：python text-to-image-base64.py [提示词] [尺寸]
 """
 
 import json
 import os
 import re
 import urllib.request
+import sys
 
 import load_env
 load_env.load_env()
@@ -15,12 +17,17 @@ load_env.load_env()
 API_KEY = os.environ.get("AGNESAI_API_KEY", "your-api-key-here")
 BASE_URL = "https://api.agnes-ai.cn/v1"
 
+PROMPT = sys.argv[1] if len(sys.argv) > 1 else "A clean product photo of a glass cube on a white studio background, soft shadows, high detail"
+SIZE = sys.argv[2] if len(sys.argv) > 2 else "1K"
+
 print("🎨 提交文生图请求（Base64 输出）...")
+print(f"  提示词: {PROMPT}")
+print(f"  尺寸: {SIZE}")
 
 payload = {
     "model": "agnes-image-2.5-flash",
-    "prompt": "A clean product photo of a glass cube on a white studio background, soft shadows, high detail",
-    "size": "1K",
+    "prompt": PROMPT,
+    "size": SIZE,
     "ratio": "1:1",
     "return_base64": True
 }

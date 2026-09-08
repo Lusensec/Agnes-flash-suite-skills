@@ -1,7 +1,13 @@
 #!/usr/bin/env python3
 """
 基础聊天示例 - 使用 agnes-3.0-flash 进行对话
+用法：python basic-chat.py [用户问题]
 """
+
+import json
+import os
+import sys
+import urllib.request
 
 import load_env
 load_env.load_env()
@@ -9,13 +15,16 @@ load_env.load_env()
 API_KEY = os.environ.get("AGNESAI_API_KEY", "your-api-key-here")
 BASE_URL = "https://api.agnes-ai.cn/v1"
 
+USER_MESSAGE = sys.argv[1] if len(sys.argv) > 1 else "Explain how autonomous agents use tools to complete tasks."
+
 print("💬 发送聊天请求...")
+print(f"  用户: {USER_MESSAGE}")
 
 payload = {
     "model": "agnes-3.0-flash",
     "messages": [
         {"role": "system", "content": "You are a helpful AI assistant."},
-        {"role": "user", "content": "Explain how autonomous agents use tools to complete tasks."}
+        {"role": "user", "content": USER_MESSAGE}
     ],
     "temperature": 0.7,
     "max_tokens": 1024

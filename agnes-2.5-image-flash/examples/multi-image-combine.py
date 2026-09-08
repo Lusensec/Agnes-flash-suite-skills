@@ -2,7 +2,7 @@
 """
 多图合成示例
 使用 agnes-image-2.5-flash 将多张参考图组合生成新图像
-用法：python multi-image-combine.py [图片1URL] [图片2URL]
+用法：python multi-image-combine.py [图片1URL] [图片2URL] [提示词]
 """
 
 import json
@@ -19,14 +19,16 @@ BASE_URL = "https://api.agnes-ai.cn/v1"
 
 IMAGE1 = sys.argv[1] if len(sys.argv) > 1 else "https://example.com/character-1.png"
 IMAGE2 = sys.argv[2] if len(sys.argv) > 2 else "https://example.com/character-2.png"
+PROMPT = sys.argv[3] if len(sys.argv) > 3 else "Combine the two characters into an intense fantasy battle scene, dynamic lighting, detailed background, cinematic composition"
 
 print("🎨 提交多图合成请求...")
-print(f"📷 参考图片 1：{IMAGE1}")
-print(f"📷 参考图片 2：{IMAGE2}")
+print(f"  参考图片 1: {IMAGE1}")
+print(f"  参考图片 2: {IMAGE2}")
+print(f"  提示词: {PROMPT}")
 
 payload = {
     "model": "agnes-image-2.5-flash",
-    "prompt": "Combine the two characters into an intense fantasy battle scene, dynamic lighting, detailed background, cinematic composition",
+    "prompt": PROMPT,
     "size": "2K",
     "ratio": "1:1",
     "extra_body": {

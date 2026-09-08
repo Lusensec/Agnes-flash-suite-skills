@@ -2,14 +2,14 @@
 """
 首尾帧控制示例
 使用 agnes-video-2.5-flash 生成视频（指定开始和结束画面）
-用法：python keyframe-video.py [首帧URL] [尾帧URL]
+用法：python keyframe-video.py [首帧URL] [尾帧URL] [提示词]
 """
 
 import json
+import os
 import sys
 import time
 import urllib.request
-import os
 
 import load_env
 load_env.load_env()
@@ -20,14 +20,16 @@ POLL_URL = "https://api.agnes-ai.cn/agnesapi"
 
 FIRST_FRAME = sys.argv[1] if len(sys.argv) > 1 else "https://example.com/first.png"
 LAST_FRAME = sys.argv[2] if len(sys.argv) > 2 else "https://example.com/last.png"
+PROMPT = sys.argv[3] if len(sys.argv) > 3 else "人物从首帧姿态自然转身走向窗边，镜头缓慢推进并平滑过渡到尾帧"
 
 print("🎬 提交首尾帧控制视频请求...")
-print(f"📷 首帧：{FIRST_FRAME}")
-print(f"📷 尾帧：{LAST_FRAME}")
+print(f"  首帧: {FIRST_FRAME}")
+print(f"  尾帧: {LAST_FRAME}")
+print(f"  提示词: {PROMPT}")
 
 payload = {
     "model": "agnes-video-2.5-flash",
-    "prompt": "人物从首帧姿态自然转身走向窗边，镜头缓慢推进并平滑过渡到尾帧",
+    "prompt": PROMPT,
     "seconds": "5",
     "mode": "keyframe",
     "size": "720P",

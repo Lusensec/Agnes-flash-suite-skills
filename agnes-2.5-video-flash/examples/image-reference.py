@@ -2,14 +2,14 @@
 """
 图片参考示例
 使用 agnes-video-2.5-flash 生成视频（图片作为参考）
-用法：python image-reference.py [参考图片URL]
+用法：python image-reference.py [参考图片URL] [提示词]
 """
 
 import json
+import os
 import sys
 import time
 import urllib.request
-import os
 
 import load_env
 load_env.load_env()
@@ -19,13 +19,15 @@ BASE_URL = "https://api.agnes-ai.cn/v1"
 POLL_URL = "https://api.agnes-ai.cn/agnesapi"
 
 IMAGE_URL = sys.argv[1] if len(sys.argv) > 1 else "https://example.com/character.png"
+PROMPT = sys.argv[2] if len(sys.argv) > 2 else "以 <Picture 1> 中的角色和美术风格为参考，角色在花田中自然奔跑，保持外观一致"
 
 print("🎬 提交图片参考视频请求...")
-print(f"📷 参考图片：{IMAGE_URL}")
+print(f"  参考图片: {IMAGE_URL}")
+print(f"  提示词: {PROMPT}")
 
 payload = {
     "model": "agnes-video-2.5-flash",
-    "prompt": "以 <Picture 1> 中的角色和美术风格为参考，角色在花田中自然奔跑，保持外观一致",
+    "prompt": PROMPT,
     "seconds": "5",
     "mode": "reference",
     "size": "720P",

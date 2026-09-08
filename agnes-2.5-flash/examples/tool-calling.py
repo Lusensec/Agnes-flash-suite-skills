@@ -1,7 +1,13 @@
 #!/usr/bin/env python3
 """
 工具调用示例 - 使用 agnes-2.5-flash 进行 Function Calling
+用法：python tool-calling.py [用户问题]
 """
+
+import json
+import os
+import sys
+import urllib.request
 
 import load_env
 load_env.load_env()
@@ -9,12 +15,15 @@ load_env.load_env()
 API_KEY = os.environ.get("AGNESAI_API_KEY", "your-api-key-here")
 BASE_URL = "https://api.agnes-ai.cn/v1"
 
+USER_MESSAGE = sys.argv[1] if len(sys.argv) > 1 else "What is the weather like in Singapore today?"
+
 print("🔧 发送工具调用请求...")
+print(f"  用户: {USER_MESSAGE}")
 
 payload = {
     "model": "agnes-2.5-flash",
     "messages": [
-        {"role": "user", "content": "What is the weather like in Singapore today?"}
+        {"role": "user", "content": USER_MESSAGE}
     ],
     "tools": [
         {
