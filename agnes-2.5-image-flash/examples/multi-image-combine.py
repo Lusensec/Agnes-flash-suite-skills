@@ -21,7 +21,7 @@ IMAGE1 = sys.argv[1] if len(sys.argv) > 1 else "https://example.com/character-1.
 IMAGE2 = sys.argv[2] if len(sys.argv) > 2 else "https://example.com/character-2.png"
 PROMPT = sys.argv[3] if len(sys.argv) > 3 else "Combine the two characters into an intense fantasy battle scene, dynamic lighting, detailed background, cinematic composition"
 
-print("🎨 提交多图合成请求...")
+print("提交多图合成请求...")
 print(f"  参考图片 1: {IMAGE1}")
 print(f"  参考图片 2: {IMAGE2}")
 print(f"  提示词: {PROMPT}")
@@ -50,13 +50,13 @@ req = urllib.request.Request(
 with urllib.request.urlopen(req) as resp:
     result = json.loads(resp.read().decode("utf-8"))
 
-print("📥 响应：")
+print("响应：")
 print(json.dumps(result, indent=2, ensure_ascii=False))
 
 image_url = result["data"][0]["url"]
 if not image_url:
-    print("❌ 获取图片 URL 失败")
+    print("[ERR] 获取图片 URL 失败")
     exit(1)
 
-print("✅ 图片生成完成！")
-print(f"🖼️ 图片地址：{image_url}")
+print("[OK] 图片生成完成！")
+print(f"图片地址：{image_url}")

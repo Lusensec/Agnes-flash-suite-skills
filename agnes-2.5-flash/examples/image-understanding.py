@@ -4,6 +4,11 @@
 用法：python image-understanding.py [图片URL]
 """
 
+import json
+import os
+import sys
+import urllib.request
+
 import load_env
 load_env.load_env()
 
@@ -12,8 +17,8 @@ BASE_URL = "https://api.agnes-ai.cn/v1"
 
 IMAGE_URL = sys.argv[1] if len(sys.argv) > 1 else "https://example.com/image.jpg"
 
-print("👁️ 发送图像理解请求...")
-print(f"📷 图片地址：{IMAGE_URL}")
+print("发送图像理解请求...")
+print(f"图片地址：{IMAGE_URL}")
 
 payload = {
     "model": "agnes-2.5-flash",
@@ -44,9 +49,9 @@ req = urllib.request.Request(
 with urllib.request.urlopen(req) as resp:
     result = json.loads(resp.read().decode("utf-8"))
 
-print("📥 响应：")
+print("响应：")
 print(json.dumps(result, indent=2, ensure_ascii=False))
 
 content = result["choices"][0]["message"]["content"]
-print("\n💭 模型分析：")
+print("\n模型分析：")
 print(content)

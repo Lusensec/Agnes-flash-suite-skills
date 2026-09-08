@@ -21,7 +21,7 @@ POLL_URL = "https://api.agnes-ai.cn/agnesapi"
 IMAGE_URL = sys.argv[1] if len(sys.argv) > 1 else "https://example.com/character.png"
 PROMPT = sys.argv[2] if len(sys.argv) > 2 else "以 <Picture 1> 中的角色和美术风格为参考，角色在花田中自然奔跑，保持外观一致"
 
-print("🎬 提交图片参考视频请求...")
+print("提交图片参考视频请求...")
 print(f"  参考图片: {IMAGE_URL}")
 print(f"  提示词: {PROMPT}")
 
@@ -48,16 +48,16 @@ req = urllib.request.Request(
 with urllib.request.urlopen(req) as resp:
     result = json.loads(resp.read().decode("utf-8"))
 
-print("📥 响应：")
+print("响应：")
 print(json.dumps(result, indent=2, ensure_ascii=False))
 
 video_id = result.get("video_id")
 if not video_id:
-    print("❌ 获取 video_id 失败")
+    print("[ERR] 获取 video_id 失败")
     exit(1)
 
-print(f"✅ 任务已提交，video_id: {video_id}")
-print("⏳ 开始轮询查询结果...")
+print(f"[OK] 任务已提交，video_id: {video_id}")
+print("开始轮询查询结果...")
 
 MAX_RETRIES = 120
 RETRY_INTERVAL = 5
@@ -74,17 +74,17 @@ for i in range(1, MAX_RETRIES + 1):
 
     status = poll_result.get("status")
     progress = poll_result.get("progress", 0)
-    print(f"🔄 状态: {status}, 进度: {progress}%")
+    print(f"状态: {status}, 进度: {progress}%")
 
     if status == "completed":
         video_url = poll_result.get("metadata", {}).get("url") or poll_result.get("url") or poll_result.get("video_url")
-        print("✅ 视频生成完成！")
-        print(f"📹 视频地址：{video_url}")
+        print("[OK] 视频生成完成！")
+        print(f"视频地址：{video_url}")
         exit(0)
     elif status == "failed":
         error_msg = (poll_result.get("error") or {}).get("message") or poll_result.get("error") or "未知错误"
-        print(f"❌ 视频生成失败：{error_msg}")
+        print(f"[ERR] 视频生成失败：{error_msg}")
         exit(1)
 
-print(f"⏱️ 超时：等待超过 {MAX_RETRIES}x{RETRY_INTERVAL} 秒")
+print(f"超时：等待超过 {MAX_RETRIES}x{RETRY_INTERVAL} 秒")
 exit(1)

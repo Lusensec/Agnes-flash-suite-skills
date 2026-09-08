@@ -17,7 +17,7 @@ BASE_URL = "https://api.agnes-ai.cn/v1"
 
 USER_MESSAGE = sys.argv[1] if len(sys.argv) > 1 else "What is the weather like in Singapore today?"
 
-print("🔧 发送工具调用请求...")
+print("发送工具调用请求...")
 print(f"  用户: {USER_MESSAGE}")
 
 payload = {
@@ -59,15 +59,15 @@ req = urllib.request.Request(
 with urllib.request.urlopen(req) as resp:
     result = json.loads(resp.read().decode("utf-8"))
 
-print("📥 响应：")
+print("响应：")
 print(json.dumps(result, indent=2, ensure_ascii=False))
 
 message = result["choices"][0]["message"]
 tool_calls = message.get("tool_calls")
 
-print("\n🔧 工具调用：")
+print("\n工具调用：")
 if tool_calls:
     print(json.dumps(tool_calls, indent=2, ensure_ascii=False))
-    print("\n⚠️ 请实现工具执行逻辑，并将结果发送回模型")
+    print("\n 请实现工具执行逻辑，并将结果发送回模型")
 else:
     print("无工具调用")

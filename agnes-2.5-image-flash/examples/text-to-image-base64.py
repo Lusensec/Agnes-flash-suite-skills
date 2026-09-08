@@ -20,7 +20,7 @@ BASE_URL = "https://api.agnes-ai.cn/v1"
 PROMPT = sys.argv[1] if len(sys.argv) > 1 else "A clean product photo of a glass cube on a white studio background, soft shadows, high detail"
 SIZE = sys.argv[2] if len(sys.argv) > 2 else "1K"
 
-print("🎨 提交文生图请求（Base64 输出）...")
+print("提交文生图请求（Base64 输出）...")
 print(f"  提示词: {PROMPT}")
 print(f"  尺寸: {SIZE}")
 
@@ -45,15 +45,15 @@ req = urllib.request.Request(
 with urllib.request.urlopen(req) as resp:
     result = json.loads(resp.read().decode("utf-8"))
 
-print("📥 响应：")
+print("响应：")
 print(json.dumps(result, indent=2, ensure_ascii=False))
 
 b64_data = result["data"][0]["b64_json"]
 if not b64_data:
-    print("❌ 获取 Base64 数据失败")
+    print("[ERR] 获取 Base64 数据失败")
     exit(1)
 
-print("✅ 图片生成完成！")
-print(f"📊 Base64 长度：{len(b64_data)} 字符")
+print("[OK] 图片生成完成！")
+print(f"Base64 长度：{len(b64_data)} 字符")
 print("\nData URI 格式：")
 print(f"data:image/png;base64,{b64_data[:100]}...")

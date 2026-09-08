@@ -20,7 +20,7 @@ BASE_URL = "https://api.agnes-ai.cn/v1"
 INPUT_IMAGE = sys.argv[1] if len(sys.argv) > 1 else "https://example.com/input-image.png"
 PROMPT = sys.argv[2] if len(sys.argv) > 2 else "Transform the scene into a rain-soaked cyberpunk night with neon reflections while preserving the original composition"
 
-print("🎨 提交图生图请求...")
+print("提交图生图请求...")
 print(f"  输入图片: {INPUT_IMAGE}")
 print(f"  提示词: {PROMPT}")
 
@@ -48,13 +48,13 @@ req = urllib.request.Request(
 with urllib.request.urlopen(req) as resp:
     result = json.loads(resp.read().decode("utf-8"))
 
-print("📥 响应：")
+print("响应：")
 print(json.dumps(result, indent=2, ensure_ascii=False))
 
 image_url = result["data"][0]["url"]
 if not image_url:
-    print("❌ 获取图片 URL 失败")
+    print("[ERR] 获取图片 URL 失败")
     exit(1)
 
-print("✅ 图片生成完成！")
-print(f"🖼️ 图片地址：{image_url}")
+print("[OK] 图片生成完成！")
+print(f"图片地址：{image_url}")

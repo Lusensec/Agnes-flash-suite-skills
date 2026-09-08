@@ -17,7 +17,7 @@ BASE_URL = "https://api.agnes-ai.cn/v1"
 
 USER_MESSAGE = sys.argv[1] if len(sys.argv) > 1 else "Help me write a Python script to process a CSV file and generate a summary report."
 
-print("🧠 发送 Thinking 模式请求...")
+print("发送 Thinking 模式请求...")
 print(f"  用户: {USER_MESSAGE}")
 
 payload = {
@@ -42,9 +42,9 @@ req = urllib.request.Request(
 with urllib.request.urlopen(req) as resp:
     result = json.loads(resp.read().decode("utf-8"))
 
-print("📥 响应：")
+print("响应：")
 print(json.dumps(result, indent=2, ensure_ascii=False))
 
 content = result["choices"][0]["message"]["content"]
-print("\n💭 模型思考过程 + 回复：")
+print("\n模型思考过程 + 回复：")
 print(content)
