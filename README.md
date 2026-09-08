@@ -5,7 +5,7 @@
 给 Agent 指令：
 
 ```
-请安装 Agnes AI Skill：https://github.com/Lusensec/agnes-flash-suite-skills-skills
+请安装 Agnes AI Skill：https://github.com/Lusensec/agnes-flash-suite-skills
 ```
 
 ## 配置 API Key
