@@ -1,32 +1,80 @@
 ---
-name: agnes-2.5-flash-suite
+name: agnes-flash-suite
 description: |
-  Agnes 2.5 Flash 全能力套件 Skill。
-  包含对话模型、图像生成、视频生成三种核心能力。
+  Agnes Flash 全能力套件 Skill。
+  包含 3.0/2.5 对话模型、图像生成、视频生成四大核心能力。
   
   子 Skill 列表：
+  - agnes-3.0-flash (Agent 编程/工具编排/可信交付)
   - agnes-2.5-flash (对话/推理/图像理解)
   - agnes-image-2.5-flash (文生图/图生图/多图合成)
   - agnes-video-2.5-flash (文生视频/首尾帧/图片参考)
   
-  触发词：agnes、AI助手、聊天、生图、图像生成、视频生成、文生视频、图片理解、工具调用、thinking
+  触发词：agnes、AI助手、聊天、生图、图像生成、视频生成、文生视频、图片理解、工具调用、thinking、agent、3.0
 ---
 
-# Agnes 2.5 Flash 全能力套件
+# Agnes Flash 全能力套件
 
 ## 概述
 
-Agnes 2.5 Flash 套件是一个多功能 AI 能力平台，整合了三种核心模型能力：
+Agnes Flash 套件是一个多功能 AI 能力平台，整合了四种核心模型能力：
 
 | 子 Skill | 模型 ID | 核心能力 | 触发场景 |
 |----------|---------|----------|----------|
+| **agnes-3.0-flash** | `agnes-3.0-flash` | Agent 编程、工具编排、可信交付 | 复杂任务、代码智能体、长任务 |
 | **agnes-2.5-flash** | `agnes-2.5-flash` | 对话、推理、图像理解、工具调用 | 问答、代码、分析、Vision |
 | **agnes-image-2.5-flash** | `agnes-image-2.5-flash` | 文生图、图生图、多图合成 | 图像创作、设计、编辑 |
 | **agnes-video-2.5-flash** | `agnes-video-2.5-flash` | 文生视频、首尾帧、图片/音频参考 | 视频制作、动画、创意 |
 
 ## 快速开始
 
-### 1. 对话模型 (agnes-2.5-flash)
+### 1. Agent 编程模型 (agnes-3.0-flash)
+
+```bash
+# 基础任务执行
+curl -X POST "https://api.agnes-ai.cn/v1/chat/completions" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -d '{
+    "model": "agnes-3.0-flash",
+    "messages": [{"role": "user", "content": "请说明智能体应如何选择并调用工具"}],
+    "max_tokens": 1024
+  }'
+
+# 工具调用
+curl -X POST "https://api.agnes-ai.cn/v1/chat/completions" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -d '{
+    "model": "agnes-3.0-flash",
+    "messages": [{"role": "user", "content": "上海现在的天气怎么样？"}],
+    "tools": [{
+      "type": "function",
+      "function": {
+        "name": "get_weather",
+        "description": "获取指定城市当前天气。",
+        "parameters": {
+          "type": "object",
+          "properties": {"city": {"type": "string"}},
+          "required": ["city"]
+        }
+      }
+    }]
+  }'
+
+# Thinking 模式
+curl -X POST "https://api.agnes-ai.cn/v1/chat/completions" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -d '{
+    "model": "agnes-3.0-flash",
+    "messages": [{"role": "user", "content": "请规划此仓库任务的实现步骤"}],
+    "chat_template_kwargs": {"enable_thinking": true}
+  }'
+```
+
+**文档**: [agnes-3.0-flash/SKILL.md](./agnes-3.0-flash/SKILL.md)
+
+---
+
+### 3. 对话模型 (agnes-2.5-flash)
 
 ```bash
 # 基础聊天
@@ -62,11 +110,11 @@ curl -X POST "https://api.agnes-ai.cn/v1/chat/completions" \
   }'
 ```
 
-**文档**: [agnes-2.5-flash/SKILL.md](./agnes-2.5-flash/SKILL.md)
+**文档**: [agnes-flash/SKILL.md](./agnes-flash/SKILL.md)
 
 ---
 
-### 2. 图像生成 (agnes-image-2.5-flash)
+### 4. 图像生成 (agnes-image-2.5-flash)
 
 ```bash
 # 文生图
@@ -107,11 +155,11 @@ curl -X POST "https://api.agnes-ai.cn/v1/images/generations" \
   }'
 ```
 
-**文档**: [agnes-image-2.5-flash/SKILL.md](./agnes-image-2.5-flash/SKILL.md)
+**文档**: [agnes-image-flash/SKILL.md](./agnes-image-flash/SKILL.md)
 
 ---
 
-### 3. 视频生成 (agnes-video-2.5-flash)
+### 5. 视频生成 (agnes-video-2.5-flash)
 
 ```bash
 # 文生视频
@@ -156,7 +204,7 @@ curl "https://api.agnes-ai.cn/agnesapi?video_id=VIDEO_ID&model_name=agnes-video-
   -H "Authorization: Bearer YOUR_API_KEY"
 ```
 
-**文档**: [agnes-video-2.5-flash/SKILL.md](./agnes-video-2.5-flash/SKILL.md)
+**文档**: [agnes-video-flash/SKILL.md](./agnes-video-flash/SKILL.md)
 
 ---
 
@@ -227,12 +275,12 @@ curl -X POST "https://api.agnes-ai.cn/v1/videos" \
 
 | 特性 | 对话模型 | 图像模型 | 视频模型 |
 |------|----------|----------|----------|
-| **模型 ID** | `agnes-2.5-flash` | `agnes-image-2.5-flash` | `agnes-video-2.5-flash` |
-| **API 端点** | `/v1/chat/completions` | `/v1/images/generations` | `/v1/videos` |
-| **上下文** | 512K | - | - |
-| **最大输出** | 65.5K | - | - |
-| **超时** | 60s | 360s | 600s |
-| **计费** | 免费 | 免费 | 免费 |
+| **模型 ID** | `agnes-3.0-flash` | `agnes-2.5-flash` | `agnes-image-2.5-flash` | `agnes-video-2.5-flash` |
+| **API 端点** | `/v1/chat/completions` | `/v1/chat/completions` | `/v1/images/generations` | `/v1/videos` |
+| **上下文** | 512K | 512K | - | - |
+| **最大输出** | 65.5K | 65.5K | - | - |
+| **超时** | 60s | 60s | 360s | 600s |
+| **计费** | 免费 | 免费 | 免费 | 免费 |
 
 ---
 
@@ -240,6 +288,8 @@ curl -X POST "https://api.agnes-ai.cn/v1/videos" \
 
 | 需求 | 推荐子 Skill | 说明 |
 |------|-------------|------|
+| Agent 编程/复杂任务 | agnes-3.0-flash | 强化工具编排与可信交付 |
+| 长任务多轮执行 | agnes-3.0-flash | 指令与上下文遵循 |
 | 问答/聊天 | agnes-2.5-flash | 通用对话、知识问答 |
 | 代码生成/调试 | agnes-2.5-flash | 支持 Thinking 模式 |
 | 图像理解 | agnes-2.5-flash | 支持 Vision 输入 |
@@ -256,9 +306,9 @@ curl -X POST "https://api.agnes-ai.cn/v1/videos" \
 ## 文件结构
 
 ```
-agnes-2.5-flash-suite/
+agnes-flash-suite/
 ├── SKILL.md                          # 本文件（主文档）
-├── agnes-2.5-flash/                  # 对话模型子 Skill
+├── agnes-3.0-flash/                  # Agent 编程模型子 Skill
 │   ├── SKILL.md
 │   ├── README.md
 │   └── examples/
@@ -266,7 +316,15 @@ agnes-2.5-flash-suite/
 │       ├── image-understanding.sh
 │       ├── tool-calling.sh
 │       └── thinking-mode.sh
-├── agnes-image-2.5-flash/            # 图像生成子 Skill
+├── agnes-flash/                      # 对话模型子 Skill
+│   ├── SKILL.md
+│   ├── README.md
+│   └── examples/
+│       ├── basic-chat.sh
+│       ├── image-understanding.sh
+│       ├── tool-calling.sh
+│       └── thinking-mode.sh
+├── agnes-image-flash/                # 图像生成子 Skill
 │   ├── SKILL.md
 │   ├── README.md
 │   └── examples/
@@ -274,7 +332,7 @@ agnes-2.5-flash-suite/
 │       ├── text-to-image-base64.sh
 │       ├── image-to-image.sh
 │       └── multi-image-combine.sh
-└── agnes-video-2.5-flash/            # 视频生成子 Skill
+└── agnes-video-flash/                # 视频生成子 Skill
     ├── SKILL.md
     ├── README.md
     └── examples/
@@ -289,7 +347,7 @@ agnes-2.5-flash-suite/
 
 ## 常见问题
 
-### Q: 三个模型可以同时使用吗？
+### Q: 四个模型可以同时使用吗？
 A: 是的，它们是完全独立的服务，可以任意组合使用。
 
 ### Q: API Key 是否通用？

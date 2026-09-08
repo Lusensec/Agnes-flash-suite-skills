@@ -1,4 +1,4 @@
-# Agnes 2.5 Flash 系列全能力套件
+# Agnes Flash 系列全能力套件
 
 ## 安装 Skill
 
@@ -24,6 +24,22 @@ AGNES_API_KEY=sk-你的实际 API Key
 > 获取 API Key：https://platform.agnes-ai.cn
 
 ## 模型介绍
+
+### agnes-3.0-flash（Agent 编程模型）
+
+全新一代升级文本模型，面向 Agent 编程与工具驱动任务，强化 Agnes Code 任务执行、工具编排与可信交付能力，重点提升复杂任务的端到端执行质量。
+
+| 特性 | 说明 |
+|------|------|
+| **上下文窗口** | 512K |
+| **最大输出** | 65.5K |
+| **核心方向** | Agnes Code 任务执行、工具调用与编排、指令与上下文遵循、可信交付 |
+| **支持功能** | 聊天补全、图像理解、工具调用、Thinking 模式、流式输出 |
+| **API 端点** | `POST /v1/chat/completions`、`POST /v1/responses`、`POST /v1/messages` |
+
+**使用场景：** 复杂 Agent 任务、代码智能体、长任务多轮执行、工具编排、可信交付
+
+---
 
 ### agnes-2.5-flash（对话模型）
 
@@ -73,11 +89,20 @@ AGNES_API_KEY=sk-你的实际 API Key
 ## 文件结构
 
 ```
-agnes-2.5-flash-suite/
+agnes-flash-suite/
 ├── README.md                          # 本文件
 ├── SKILL.md                           # Skill 主文档
 │
-├── agnes-2.5-flash/                   # 对话模型
+├── agnes-3.0-flash/                   # Agent 编程模型
+│   ├── SKILL.md                       # Agent 编程模型详细说明
+│   ├── README.md                      # Agent 编程模型简介
+│   └── examples/
+│       ├── basic-chat.sh              # 基础聊天示例
+│       ├── image-understanding.sh     # 图像理解示例
+│       ├── tool-calling.sh            # 工具调用示例
+│       └── thinking-mode.sh           # Thinking 模式示例
+│
+├── agnes-flash/                       # 对话模型（agnes-2.5-flash）
 │   ├── SKILL.md                       # 对话模型详细说明
 │   ├── README.md                      # 对话模型简介
 │   └── examples/
@@ -86,7 +111,7 @@ agnes-2.5-flash-suite/
 │       ├── tool-calling.sh            # 工具调用示例
 │       └── thinking-mode.sh           # Thinking 模式示例
 │
-├── agnes-image-2.5-flash/             # 图像生成
+├── agnes-image-flash/                 # 图像生成（agnes-image-2.5-flash）
 │   ├── SKILL.md                       # 图像生成详细说明
 │   ├── README.md                      # 图像生成简介
 │   └── examples/
@@ -95,7 +120,7 @@ agnes-2.5-flash-suite/
 │       ├── image-to-image.sh          # 图生图示例
 │       └── multi-image-combine.sh     # 多图合成示例
 │
-└── agnes-video-2.5-flash/             # 视频生成
+└── agnes-video-flash/                 # 视频生成（agnes-video-2.5-flash）
     ├── SKILL.md                       # 视频生成详细说明
     ├── README.md                      # 视频生成简介
     └── examples/
@@ -108,6 +133,7 @@ agnes-2.5-flash-suite/
 
 ## 相关文档
 
+- [Agnes 3.0 Flash Agent 编程模型](https://agnes-ai.cn/zh-Hans/docs/agnes-30-flash)
 - [Agnes 2.5 Flash 对话模型](https://agnes-ai.cn/zh-Hans/docs/agnes-25-flash)
 - [Agnes Image 2.5 Flash](https://agnes-ai.cn/zh-Hans/docs/agnes-image-25-flash)
 - [Agnes Video 2.5 Flash](https://agnes-ai.cn/zh-Hans/docs/agnes-video-25-flash)

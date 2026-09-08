@@ -1,7 +1,7 @@
 ---
-name: agnes-video-2.5-flash
+name: agnes-video-flash
 description: |
-  Agnes Video 2.5 Flash 视频生成 Skill。
+  Agnes Video 2.5 Flash 视频生成 Skill（模型 ID: agnes-video-2.5-flash）。
   支持文生视频、首尾帧控制、图片参考、音频参考等多种模式。
   官方文档：https://agnes-ai.cn/zh-Hans/docs/agnes-video-25-flash
   触发词：视频生成、视频、video generation、首尾帧、图片转视频
