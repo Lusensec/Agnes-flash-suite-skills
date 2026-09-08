@@ -4,66 +4,51 @@
 
 ## 功能特性
 
-- ✅ 文生图
-- ✅ 图生图（图像编辑/风格迁移）
-- ✅ 多图合成
-- ✅ 多种尺寸档位（1K/2K/3K/4K）
-- ✅ 多种宽高比（1:1/3:4/4:3/16:9/9:16/2:3/3:2/21:9）
-- ✅ URL 或 Base64 输出
+- 文生图
+- 图生图（图像编辑/风格迁移）
+- 多图合成
+- 多种尺寸档位（1K/2K/3K/4K）
+- 多种宽高比（1:1/3:4/4:3/16:9/9:16/2:3/3:2/21:9）
+- URL 或 Base64 输出
 
 ## 快速开始
 
-### 1. 设置 API Key
+### 1. 配置 API Key
 
-```bash
-export AGNESAI_API_KEY="sk-..."
+复制 `.env.example` 为 `.env`（放在本 skill 根目录），填入 API Key：
+
+```
+AGNESAI_API_KEY=sk-你的实际API Key
 ```
 
-> 获取 API Key：https://platform.agnes-ai.cn
+> 脚本会自动从 `.env` 加载，无需手动 export。获取 API Key：https://platform.agnes-ai.cn
 
 ### 2. 文生图
 
-```python
-# 运行 python examples/text-to-image.py
-import json, urllib.request, os
-API_KEY = os.environ.get("AGNESAI_API_KEY")
-resp = urllib.request.urlopen(urllib.request.Request(
-    "https://api.agnes-ai.cn/v1/images/generations",
-    data=json.dumps({
-        "model": "agnes-image-2.5-flash",
-        "prompt": "A luminous floating city above a misty canyon at sunrise",
-        "size": "2K",
-        "ratio": "16:9",
-        "extra_body": {"response_format": "url"}
-    }).encode(),
-    headers={"Authorization": f"Bearer {API_KEY}", "Content-Type": "application/json"},
-    method="POST"
-)).read()
-print(json.loads(resp)["data"][0]["url"])
+```bash
+# 参数：[提示词] [尺寸] [比例]，均可选（不传使用默认演示内容）
+python examples/text-to-image.py "一只可爱的田园犬在稻田边" "2K" "16:9"
 ```
 
 ### 3. 图生图
 
-```python
-# 运行 python examples/image-to-image.py [输入图片URL]
-import json, urllib.request, os
-API_KEY = os.environ.get("AGNESAI_API_KEY")
-resp = urllib.request.urlopen(urllib.request.Request(
-    "https://api.agnes-ai.cn/v1/images/generations",
-    data=json.dumps({
-        "model": "agnes-image-2.5-flash",
-        "prompt": "Transform to cyberpunk style",
-        "size": "2K",
-        "ratio": "16:9",
-        "extra_body": {
-            "image": ["https://example.com/input.png"],
-            "response_format": "url"
-        }
-    }).encode(),
-    headers={"Authorization": f"Bearer {API_KEY}", "Content-Type": "application/json"},
-    method="POST"
-)).read()
-print(json.loads(resp)["data"][0]["url"])
+```bash
+# 参数：[输入图片URL] [提示词]，均可选
+python examples/image-to-image.py https://example.com/input.png "转换为赛博朋克风格"
+```
+
+### 4. 多图合成
+
+```bash
+# 参数：[图片1URL] [图片2URL] [提示词]，均可选
+python examples/multi-image-combine.py https://example.com/a.png https://example.com/b.png "将两张图合成"
+```
+
+### 5. 文生图（Base64 输出）
+
+```bash
+# 参数：[提示词] [尺寸]，均可选
+python examples/text-to-image-base64.py "一个玻璃立方体产品照" "1K"
 ```
 
 ## 使用场景
@@ -85,13 +70,14 @@ print(json.loads(resp)["data"][0]["url"])
 
 ```
 agnes-2.5-image-flash/
-├── SKILL.md               # 详细说明文档
-├── README.md              # 本文件
+├── SKILL.md                        # 详细说明文档
+├── README.md                       # 本文件
 └── examples/
-    ├── text-to-image.py       # 文生图（URL 输出）
-    ├── text-to-image-base64.py # 文生图（Base64 输出）
-    ├── image-to-image.py      # 图生图
-    └── multi-image-combine.py # 多图合成
+    ├── load_env.py                 # .env 自动加载（自包含）
+    ├── text-to-image.py            # 参数：[提示词] [尺寸] [比例]
+    ├── text-to-image-base64.py     # 参数：[提示词] [尺寸]
+    ├── image-to-image.py           # 参数：[输入图片URL] [提示词]
+    └── multi-image-combine.py      # 参数：[图片1URL] [图片2URL] [提示词]
 ```
 
 ## 相关文档

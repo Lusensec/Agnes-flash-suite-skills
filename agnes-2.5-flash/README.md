@@ -4,86 +4,52 @@
 
 ## 功能特性
 
-- ✅ 聊天补全
-- ✅ 多轮对话（512K 上下文）
-- ✅ 图像理解（Vision）
-- ✅ 工具调用（Function Calling）
-- ✅ Thinking 模式
-- ✅ 流式输出
-- ✅ 代码专项任务优化
+- 聊天补全
+- 多轮对话（512K 上下文）
+- 图像理解（Vision）
+- 工具调用（Function Calling）
+- Thinking 模式
+- 流式输出
+- 代码专项任务优化
 
 ## 快速开始
 
-### 1. 设置 API Key
+### 1. 配置 API Key
 
-```bash
-export AGNES_API_KEY="sk-..."
+复制 `.env.example` 为 `.env`（放在本 skill 根目录），填入 API Key：
+
 ```
+AGNESAI_API_KEY=sk-你的实际API Key
+```
+
+> 脚本会自动从 `.env` 加载，无需手动 export。获取 API Key：https://platform.agnes-ai.cn
 
 ### 2. 基础聊天
 
 ```bash
-curl -X POST "https://api.agnes-ai.cn/v1/chat/completions" \
-  -H "Authorization: Bearer $AGNES_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "agnes-2.5-flash",
-    "messages": [
-      {
-        "role": "user",
-        "content": "你好，请介绍一下你自己"
-      }
-    ]
-  }'
+# 不传参数使用默认示例，传参数则使用你的问题
+python examples/basic-chat.py "用 Python 写一个快速排序算法"
 ```
 
 ### 3. 图像理解
 
 ```bash
-curl -X POST "https://api.agnes-ai.cn/v1/chat/completions" \
-  -H "Authorization: Bearer $AGNES_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "agnes-2.5-flash",
-    "messages": [
-      {
-        "role": "user",
-        "content": [
-          {
-            "type": "text",
-            "text": "这张图片里有什么？"
-          },
-          {
-            "type": "image_url",
-            "image_url": {
-              "url": "https://example.com/image.jpg"
-            }
-          }
-        ]
-      }
-    ]
-  }'
+python examples/image-understanding.py https://example.com/image.jpg
 ```
 
-### 4. 开启 Thinking 模式
+### 4. 工具调用
 
 ```bash
-curl -X POST "https://api.agnes-ai.cn/v1/chat/completions" \
-  -H "Authorization: Bearer $AGNES_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "agnes-2.5-flash",
-    "messages": [
-      {
-        "role": "user",
-        "content": "帮我写一个 Python 脚本处理 CSV 文件"
-      }
-    ],
-    "chat_template_kwargs": {
-      "enable_thinking": true
-    }
-  }'
+python examples/tool-calling.py "查询新加坡今天的天气"
 ```
+
+### 5. Thinking 模式
+
+```bash
+python examples/thinking-mode.py "帮我写一个 Python 脚本处理 CSV 文件"
+```
+
+> 所有参数均可选：不传参数时使用默认演示内容，传参数时动态替换。
 
 ## 使用场景
 
@@ -99,6 +65,20 @@ curl -X POST "https://api.agnes-ai.cn/v1/chat/completions" \
 
 - 当前限时免费
 - 原价：输入 ¥0.20/百万 Token，输出 ¥1.00/百万 Token
+
+## 文件结构
+
+```
+agnes-2.5-flash/
+├── SKILL.md                        # 详细说明文档
+├── README.md                       # 本文件
+└── examples/
+    ├── load_env.py                 # .env 自动加载（自包含）
+    ├── basic-chat.py               # 参数：[用户问题]
+    ├── image-understanding.py      # 参数：[图片URL]
+    ├── tool-calling.py             # 参数：[用户问题]
+    └── thinking-mode.py            # 参数：[问题]
+```
 
 ## 文档
 

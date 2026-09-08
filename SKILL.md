@@ -15,9 +15,7 @@ description: |
 
 # Agnes Flash 全能力套件
 
-> **灵活使用：** 本套件可整体安装，也可单独提取任意子目录（如 `agnes-2.5-image-flash/`）作为独立 Skill 使用。每个子 Skill 自包含 `SKILL.md` + `examples/*.py`，无需依赖其他模块。
-
-# Agnes Flash 全能力套件
+> **灵活使用：** 本套件可整体安装，也可单独提取任意子目录（如 `agnes-2.5-image-flash/`）作为独立 Skill 使用。每个子 Skill 自包含 `SKILL.md` + `examples/*.py`（含 `load_env.py`），无需依赖其他模块。
 
 ## 概述
 
@@ -81,7 +79,7 @@ print(json.loads(resp)["choices"][0]["message"]["content"])
 
 ---
 
-### 3. 对话模型 (agnes-2.5-flash)
+### 2. 对话模型 (agnes-2.5-flash)
 
 ```python
 # 基础聊天
@@ -126,7 +124,7 @@ resp = urllib.request.urlopen(urllib.request.Request(
 
 ---
 
-### 4. 图像生成 (agnes-image-2.5-flash)
+### 3. 图像生成 (agnes-image-2.5-flash)
 
 ```python
 # 文生图
@@ -161,7 +159,7 @@ resp = urllib.request.urlopen(urllib.request.Request(
 
 ---
 
-### 5. 视频生成 (agnes-video-2.5-flash)
+### 4. 视频生成 (agnes-video-2.5-flash)
 
 ```python
 # 文生视频
@@ -283,39 +281,45 @@ print(f"视频任务已提交: {video_id}")
 ```
 agnes-flash-suite/
 ├── SKILL.md                          # 本文件（主文档）
+├── README.md                         # 安装与使用说明
+├── .env.example                      # API Key 模板（复制为 .env）
 ├── agnes-3.0-flash/                  # Agent 编程模型子 Skill
 │   ├── SKILL.md
 │   ├── README.md
 │   └── examples/
-│       ├── basic-chat.py
-│       ├── image-understanding.py
-│       ├── tool-calling.py
-│       └── thinking-mode.py
+│       ├── load_env.py               # .env 自动加载（自包含）
+│       ├── basic-chat.py             # 参数：[用户问题]
+│       ├── image-understanding.py    # 参数：[图片URL]
+│       ├── tool-calling.py           # 参数：[用户问题]
+│       └── thinking-mode.py          # 参数：[问题]
 ├── agnes-2.5-flash/                  # 对话模型子 Skill
 │   ├── SKILL.md
 │   ├── README.md
 │   └── examples/
-│       ├── basic-chat.py
-│       ├── image-understanding.py
-│       ├── tool-calling.py
-│       └── thinking-mode.py
+│       ├── load_env.py
+│       ├── basic-chat.py             # 参数：[用户问题]
+│       ├── image-understanding.py    # 参数：[图片URL]
+│       ├── tool-calling.py           # 参数：[用户问题]
+│       └── thinking-mode.py          # 参数：[问题]
 ├── agnes-2.5-image-flash/            # 图像生成子 Skill
 │   ├── SKILL.md
 │   ├── README.md
 │   └── examples/
-│       ├── text-to-image.py
-│       ├── text-to-image-base64.py
-│       ├── image-to-image.py
-│       └── multi-image-combine.py
+│       ├── load_env.py
+│       ├── text-to-image.py          # 参数：[提示词] [尺寸] [比例]
+│       ├── text-to-image-base64.py   # 参数：[提示词] [尺寸]
+│       ├── image-to-image.py         # 参数：[输入图片URL] [提示词]
+│       └── multi-image-combine.py    # 参数：[图片1URL] [图片2URL] [提示词]
 └── agnes-2.5-video-flash/            # 视频生成子 Skill
     ├── SKILL.md
     ├── README.md
     └── examples/
-        ├── text-to-video.py
-        ├── keyframe-video.py
-        ├── image-reference.py
-        ├── audio-reference.py
-        └── query-video.py
+        ├── load_env.py
+        ├── text-to-video.py          # 参数：[提示词]
+        ├── keyframe-video.py         # 参数：[首帧URL] [尾帧URL] [提示词]
+        ├── image-reference.py        # 参数：[参考图片URL] [提示词]
+        ├── audio-reference.py        # 参数：[参考音频URL] [提示词]
+        └── query-video.py            # 参数：<video_id> [api_key]
 ```
 
 ---

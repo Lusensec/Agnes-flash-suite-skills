@@ -11,7 +11,7 @@ description: |
 
 ## 概述
 
-X 2.5 Flash 是 Agnes AI 的最新一代语言模型，基于 Agnes 2.0 Flash 升级的全量可用模型。它在编码任务、智能体工作流、工具调用、多轮对话、推理和图像理解体验上进行了全面优化。
+Agnes 2.5 Flash 是 Agnes AI 的最新一代语言模型，基于 Agnes 2.0 Flash 升级的全量可用模型。它在编码任务、智能体工作流、工具调用、多轮对话、推理和图像理解体验上进行了全面优化。
 
 **核心能力：**
 - 512K 超长上下文窗口
@@ -73,7 +73,7 @@ X 2.5 Flash 是 Agnes AI 的最新一代语言模型，基于 Agnes 2.0 Flash �
 ### 1. 基础聊天
 
 ```python
-# 运行 python examples/basic-chat.py
+# 运行 python examples/basic-chat.py [用户问题]
 import json, urllib.request, os
 API_KEY = os.environ.get("AGNESAI_API_KEY")
 resp = urllib.request.urlopen(urllib.request.Request(
@@ -118,7 +118,7 @@ print(json.loads(resp)["choices"][0]["message"]["content"])
 ### 3. 工具调用
 
 ```python
-# 运行 python examples/tool-calling.py
+# 运行 python examples/tool-calling.py [用户问题]
 import json, urllib.request, os
 API_KEY = os.environ.get("AGNESAI_API_KEY")
 resp = urllib.request.urlopen(urllib.request.Request(
@@ -149,7 +149,7 @@ print(json.dumps(result["choices"][0]["message"].get("tool_calls"), indent=2, en
 ### 4. Thinking 模式
 
 ```python
-# 运行 python examples/thinking-mode.py
+# 运行 python examples/thinking-mode.py [问题]
 import json, urllib.request, os
 API_KEY = os.environ.get("AGNESAI_API_KEY")
 resp = urllib.request.urlopen(urllib.request.Request(
@@ -168,20 +168,23 @@ print(json.loads(resp)["choices"][0]["message"]["content"])
 
 ### 5. 流式输出
 
-```bash
-curl -X POST "https://api.agnes-ai.cn/v1/chat/completions" \
-  -H "Authorization: Bearer YOUR_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "agnes-2.5-flash",
-    "messages": [
-      {
-        "role": "user",
-        "content": "Write a short poem about AI."
-      }
-    ],
-    "stream": true
-  }'
+```python
+import json, urllib.request, os
+API_KEY = os.environ.get("AGNESAI_API_KEY")
+req = urllib.request.Request(
+    "https://api.agnes-ai.cn/v1/chat/completions",
+    data=json.dumps({
+        "model": "agnes-2.5-flash",
+        "messages": [{"role": "user", "content": "Write a short poem about AI."}],
+        "stream": True
+    }).encode(),
+    headers={"Authorization": f"Bearer {API_KEY}", "Content-Type": "application/json"},
+    method="POST"
+)
+with urllib.request.urlopen(req) as resp:
+    for line in resp:
+        if line:
+            print(line.decode("utf-8"), end="")
 ```
 
 ## 响应格式
@@ -288,6 +291,6 @@ curl -X POST "https://api.agnes-ai.cn/v1/chat/completions" \
 
 ## 相关文档
 
-- [X 2.5 Flash 官方文档](https://agnes-ai.cn/zh-Hans/docs/agnes-25-flash)
+- [Agnes 2.5 Flash 官方文档](https://agnes-ai.cn/zh-Hans/docs/agnes-25-flash)
 - [完整文档索引](https://wiki.agnes-ai.cn/llms.txt)
 - [Agnes AI 平台](https://platform.agnes-ai.cn)

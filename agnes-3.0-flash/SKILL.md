@@ -1,13 +1,13 @@
 ---
 name: agnes-3.0-flash
 description: |
-  Agnes 3.0 Flash 对话模型 Skill。
+  Agnes 3.0 Flash Agent 编程模型 Skill（模型 ID: agnes-3.0-flash）。
   全新一代文本模型，强化 Agnes Code 任务执行、工具编排与可信交付能力。
   官方文档：https://agnes-ai.cn/zh-Hans/docs/agnes-30-flash
-  触发词：对话、聊天、问答、image understanding、tool calling、thinking、3.0
+  触发词：对话、聊天、问答、agent、image understanding、tool calling、thinking、3.0
 ---
 
-# Agnes 3.0 Flash 对话模型 Skill
+# Agnes 3.0 Flash Agent 编程模型 Skill
 
 ## 概述
 
@@ -79,7 +79,7 @@ Agnes 3.0 Flash 是 Agnes AI 全新一代升级文本模型，面向 Agent 编�
 ### 1. 基础聊天
 
 ```python
-# 运行 python examples/basic-chat.py
+# 运行 python examples/basic-chat.py [用户问题]
 import json, urllib.request, os
 API_KEY = os.environ.get("AGNESAI_API_KEY")
 resp = urllib.request.urlopen(urllib.request.Request(
@@ -124,7 +124,7 @@ print(json.loads(resp)["choices"][0]["message"]["content"])
 ### 3. 工具调用
 
 ```python
-# 运行 python examples/tool-calling.py
+# 运行 python examples/tool-calling.py [用户问题]
 import json, urllib.request, os
 API_KEY = os.environ.get("AGNESAI_API_KEY")
 resp = urllib.request.urlopen(urllib.request.Request(
@@ -155,7 +155,7 @@ print(json.dumps(result["choices"][0]["message"].get("tool_calls"), indent=2, en
 ### 4. Thinking 模式
 
 ```python
-# 运行 python examples/thinking-mode.py
+# 运行 python examples/thinking-mode.py [问题]
 import json, urllib.request, os
 API_KEY = os.environ.get("AGNESAI_API_KEY")
 resp = urllib.request.urlopen(urllib.request.Request(
@@ -174,20 +174,23 @@ print(json.loads(resp)["choices"][0]["message"]["content"])
 
 ### 5. 流式输出
 
-```bash
-curl -X POST "https://api.agnes-ai.cn/v1/chat/completions" \
-  -H "Authorization: Bearer YOUR_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "agnes-3.0-flash",
-    "messages": [
-      {
-        "role": "user",
-        "content": "Write a short poem about AI."
-      }
-    ],
-    "stream": true
-  }'
+```python
+import json, urllib.request, os
+API_KEY = os.environ.get("AGNESAI_API_KEY")
+req = urllib.request.Request(
+    "https://api.agnes-ai.cn/v1/chat/completions",
+    data=json.dumps({
+        "model": "agnes-3.0-flash",
+        "messages": [{"role": "user", "content": "Write a short poem about AI."}],
+        "stream": True
+    }).encode(),
+    headers={"Authorization": f"Bearer {API_KEY}", "Content-Type": "application/json"},
+    method="POST"
+)
+with urllib.request.urlopen(req) as resp:
+    for line in resp:
+        if line:
+            print(line.decode("utf-8"), end="")
 ```
 
 ## 响应格式

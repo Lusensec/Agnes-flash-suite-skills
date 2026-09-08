@@ -11,7 +11,7 @@ description: |
 
 ## 概述
 
-X 2.5 Flash 是 Agnes AI 的视频生成模型，支持多种生成模式：
+Agnes Video 2.5 Flash 是 Agnes AI 的视频生成模型，支持多种生成模式：
 
 | 模式 | API mode | 说明 |
 |------|----------|------|
@@ -99,7 +99,7 @@ X 2.5 Flash 是 Agnes AI 的视频生成模型，支持多种生成模式：
 ### 1. 文生视频
 
 ```python
-# 运行 python examples/text-to-video.py
+# 运行 python examples/text-to-video.py [提示词]（参数可选）
 import json, urllib.request, os
 API_KEY = os.environ.get("AGNESAI_API_KEY")
 resp = urllib.request.urlopen(urllib.request.Request(
@@ -121,7 +121,7 @@ print(json.loads(resp)["video_id"])
 ### 2. 首尾帧控制
 
 ```python
-# 运行 python examples/keyframe-video.py [首帧URL] [尾帧URL]
+# 运行 python examples/keyframe-video.py [首帧URL] [尾帧URL] [提示词]（参数可选）
 import json, urllib.request, os
 API_KEY = os.environ.get("AGNESAI_API_KEY")
 resp = urllib.request.urlopen(urllib.request.Request(
@@ -144,7 +144,7 @@ print(json.loads(resp)["video_id"])
 ### 3. 图片参考
 
 ```python
-# 运行 python examples/image-reference.py [参考图片URL]
+# 运行 python examples/image-reference.py [参考图片URL] [提示词]（参数可选）
 import json, urllib.request, os
 API_KEY = os.environ.get("AGNESAI_API_KEY")
 resp = urllib.request.urlopen(urllib.request.Request(
@@ -167,7 +167,7 @@ print(json.loads(resp)["video_id"])
 ### 4. 音频参考
 
 ```python
-# 运行 python examples/audio-reference.py [参考音频URL]
+# 运行 python examples/audio-reference.py [参考音频URL] [提示词]（参数可选）
 import json, urllib.request, os
 API_KEY = os.environ.get("AGNESAI_API_KEY")
 resp = urllib.request.urlopen(urllib.request.Request(
@@ -190,7 +190,7 @@ print(json.loads(resp)["video_id"])
 ## 查询任务结果
 
 ```python
-# 运行 python examples/query-video.py <video_id>
+# 运行 python examples/query-video.py <video_id> [api_key]
 import json, urllib.request, os
 API_KEY = os.environ.get("AGNESAI_API_KEY")
 resp = urllib.request.urlopen(urllib.request.Request(
@@ -348,8 +348,8 @@ const videoRequestFlash = async (config: VideoConfig, _model: VideoModel): Promi
     600000,
   );
   
-  if (pollRes.error) throw new Error(`[X Video Flash] ${pollRes.error}`);
-  if (!pollRes.data) throw new Error("[X Video Flash] 结果 URL 为空");
+  if (pollRes.error) throw new Error(`[Agnes Video Flash] ${pollRes.error}`);
+  if (!pollRes.data) throw new Error("[Agnes Video Flash] 结果 URL 为空");
   return pollRes.data;
 };
 ```
@@ -358,7 +358,7 @@ const videoRequestFlash = async (config: VideoConfig, _model: VideoModel): Promi
 
 ### Q: Flash 不支持视频参考？
 
-A: 是的，`agnes-video-2.5-flash` 不支持 `videos` 参考。如果传入有效视频内容，会返回 HTTP 400 错误：`videos is not supported`。如需视频参考功能，请使用 `x-2.5` 模型。
+A: 是的，`agnes-video-2.5-flash` 不支持 `videos` 参考。如果传入有效视频内容，会返回 HTTP 400 错误：`videos is not supported`。如需视频参考功能，请使用 `agnes-video-2.5`（非 Flash）模型。
 
 ### Q: 首尾帧必须同时传吗？
 
@@ -381,5 +381,5 @@ A: 视频生成可能需要较长时间，建议：
 
 ## 相关文档
 
-- [X 2.5 Flash 视频模型官方文档](https://agnes-ai.cn/zh-Hans/docs/agnes-video-25-flash)
+- [Agnes Video 2.5 Flash 官方文档](https://agnes-ai.cn/zh-Hans/docs/agnes-video-25-flash)
 - [Agnes AI 平台](https://platform.agnes-ai.cn)

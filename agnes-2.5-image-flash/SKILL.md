@@ -11,7 +11,7 @@ description: |
 
 ## 概述
 
-X 2.5 Flash 是 Agnes AI 最新一代图像模型，整体能力全面超过旧版本。支持文生图、图生图和多图合成工作流，特别适合高信息密度图像、复杂视觉细节和语义对齐。
+Agnes Image 2.5 Flash 是 Agnes AI 最新一代图像模型，整体能力全面超过旧版本。支持文生图、图生图和多图合成工作流，特别适合高信息密度图像、复杂视觉细节和语义对齐。
 
 **核心优化：**
 - 高信息密度图像生成
@@ -71,7 +71,7 @@ X 2.5 Flash 是 Agnes AI 最新一代图像模型，整体能力全面超过旧�
 ### 1. 文生图
 
 ```python
-# 运行 python examples/text-to-image.py
+# 运行 python examples/text-to-image.py [提示词] [尺寸] [比例]（参数可选）
 import json, urllib.request, os
 API_KEY = os.environ.get("AGNESAI_API_KEY")
 resp = urllib.request.urlopen(urllib.request.Request(
@@ -92,7 +92,7 @@ print(json.loads(resp)["data"][0]["url"])
 ### 2. 图生图
 
 ```python
-# 运行 python examples/image-to-image.py [输入图片URL]
+# 运行 python examples/image-to-image.py [输入图片URL] [提示词]（参数可选）
 import json, urllib.request, os
 API_KEY = os.environ.get("AGNESAI_API_KEY")
 resp = urllib.request.urlopen(urllib.request.Request(
@@ -116,7 +116,7 @@ print(json.loads(resp)["data"][0]["url"])
 ### 3. 多图合成
 
 ```python
-# 运行 python examples/multi-image-combine.py [图片1URL] [图片2URL]
+# 运行 python examples/multi-image-combine.py [图片1URL] [图片2URL] [提示词]（参数可选）
 import json, urllib.request, os
 API_KEY = os.environ.get("AGNESAI_API_KEY")
 resp = urllib.request.urlopen(urllib.request.Request(
@@ -291,5 +291,5 @@ print(json.loads(resp)["data"][0]["url"])
 
 ## 相关文档
 
-- [X 2.5 Flash 图像模型官方文档](https://agnes-ai.cn/zh-Hans/docs/agnes-image-25-flash)
+- [Agnes Image 2.5 Flash 官方文档](https://agnes-ai.cn/zh-Hans/docs/agnes-image-25-flash)
 - [Agnes AI 平台](https://platform.agnes-ai.cn)

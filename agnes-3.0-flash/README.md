@@ -1,128 +1,107 @@
 # Agnes 3.0 Flash Skill
 
-这是一个用于对话和推理的 AI 模型技能，基于 Agnes AI 的 3.0 Flash 语言模型。
+这是一个面向 Agent 编程与工具驱动任务的 AI 模型技能，基于 Agnes AI 的 3.0 Flash 模型，强化 Agnes Code 任务执行、工具编排与可信交付能力。
 
 ## 功能特性
 
-- ✅ 聊天补全
-- ✅ 多轮对话（512K 上下文）
-- ✅ 图像理解（Vision）
-- ✅ 工具调用（Function Calling）
-- ✅ Thinking 模式
-- ✅ 流式输出
-- ✅ 代码专项任务优化
-- ✅ 更可靠的端到端任务交付
-- ✅ 更稳定的工具编排
-- ✅ 更可信的执行结果
+- 聊天补全
+- 多轮对话（512K 上下文）
+- 图像理解（Vision）
+- 工具调用（Function Calling）
+- Thinking 模式
+- 流式输出
+- 更可靠的端到端任务交付
+- 更稳定的工具编排
+- 更可信的执行结果
 
 ## 快速开始
 
-### 1. 设置 API Key
+### 1. 配置 API Key
 
-```bash
-export AGNES_API_KEY="sk-..."
+复制 `.env.example` 为 `.env`（放在本 skill 根目录），填入 API Key：
+
 ```
+AGNESAI_API_KEY=sk-你的实际API Key
+```
+
+> 脚本会自动从 `.env` 加载，无需手动 export。获取 API Key：https://platform.agnes-ai.cn
 
 ### 2. 基础聊天
 
 ```bash
-curl -X POST "https://api.agnes-ai.cn/v1/chat/completions" \
-  -H "Authorization: Bearer $AGNES_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "agnes-3.0-flash",
-    "messages": [
-      {
-        "role": "user",
-        "content": "你好，请介绍一下你自己"
-      }
-    ]
-  }'
+# 不传参数使用默认示例，传参数则使用你的问题
+python examples/basic-chat.py "解释一下工具调用的工作原理"
 ```
 
 ### 3. 图像理解
 
 ```bash
-curl -X POST "https://api.agnes-ai.cn/v1/chat/completions" \
-  -H "Authorization: Bearer $AGNES_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "agnes-3.0-flash",
-    "messages": [
-      {
-        "role": "user",
-        "content": [
-          {
-            "type": "text",
-            "text": "这张图片里有什么？"
-          },
-          {
-            "type": "image_url",
-            "image_url": {
-              "url": "https://example.com/image.jpg"
-            }
-          }
-        ]
-      }
-    ]
-  }'
+python examples/image-understanding.py https://example.com/image.jpg
 ```
 
-### 4. 开启 Thinking 模式
+### 4. 工具调用
 
 ```bash
-# OpenAI 兼容格式
-curl -X POST "https://api.agnes-ai.cn/v1/chat/completions" \
-  -H "Authorization: Bearer $AGNES_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "agnes-3.0-flash",
-    "messages": [
-      {
-        "role": "user",
-        "content": "帮我写一个 Python 脚本处理 CSV 文件"
-      }
-    ],
-    "chat_template_kwargs": {
-      "enable_thinking": true
-    }
-  }'
+python examples/tool-calling.py "查询新加坡今天的天气"
+```
 
-# Anthropic 兼容格式
-curl -X POST "https://api.agnes-ai.cn/v1/messages" \
-  -H "x-api-key: $AGNES_API_KEY" \
-  -H "anthropic-version: 2023-06-01" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "agnes-3.0-flash",
-    "max_tokens": 2048,
-    "messages": [
-      {
-        "role": "user",
-        "content": "帮我写一个 Python 脚本处理 CSV 文件"
-      }
-    ],
-    "thinking": {
-      "type": "enabled",
-      "budget_tokens": 2048
-    }
-  }'
+### 5. Thinking 模式
+
+```bash
+python examples/thinking-mode.py "帮我规划这个仓库任务的实现步骤"
+```
+
+> 所有参数均可选：不传参数时使用默认演示内容，传参数时动态替换。
+
+### 流式输出（可选）
+
+```python
+import json, urllib.request, os
+API_KEY = os.environ.get("AGNESAI_API_KEY")
+req = urllib.request.Request(
+    "https://api.agnes-ai.cn/v1/chat/completions",
+    data=json.dumps({
+        "model": "agnes-3.0-flash",
+        "messages": [{"role": "user", "content": "写一首关于 AI 的短诗"}],
+        "stream": True
+    }).encode(),
+    headers={"Authorization": f"Bearer {API_KEY}", "Content-Type": "application/json"},
+    method="POST"
+)
+with urllib.request.urlopen(req) as resp:
+    for line in resp:
+        if line:
+            print(line.decode("utf-8"), end="")
 ```
 
 ## 使用场景
 
 | 场景 | 说明 |
 |------|------|
-| **AI 助手** | 通用问答、效率助手、个人助理 |
-| **自主智能体** | 多步骤任务执行、规划、工具使用 |
+| **复杂 Agent 任务** | 长任务多轮执行、工具编排 |
+| **代码智能体** | Agnes Code 任务执行与交付 |
 | **编码助手** | 代码生成、Bug 排查、重构建议 |
 | **图像理解** | 截图分析、图片描述、视觉问答 |
-| **客户支持** | FAQ 自动回复、客服机器人 |
+| **可信交付** | 减少无依据结论与错误完成确认 |
 
 ## 价格
 
 - 当前限时免费
 - 原价：输入缓存命中 ¥0.035/百万 Token，输入 ¥0.35/百万 Token，输出 ¥1.00/百万 Token
+
+## 文件结构
+
+```
+agnes-3.0-flash/
+├── SKILL.md                        # 详细说明文档
+├── README.md                       # 本文件
+└── examples/
+    ├── load_env.py                 # .env 自动加载（自包含）
+    ├── basic-chat.py               # 参数：[用户问题]
+    ├── image-understanding.py      # 参数：[图片URL]
+    ├── tool-calling.py             # 参数：[用户问题]
+    └── thinking-mode.py            # 参数：[问题]
+```
 
 ## 文档
 

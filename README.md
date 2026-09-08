@@ -26,29 +26,34 @@
 **示例：单独使用图像生成 Skill**
 
 ```bash
-# 从 GitHub 下载单个子目录
+# 从 GitHub 下载仓库
 git clone https://github.com/Lusensec/agnes-flash-suite-skills.git
-cp -r agnes-flash-suite-skills/agnes-2.5-image-flash ~/your-skills/
+cd agnes-flash-suite-skills
 
-# 在该目录下配置 .env
-cp agnes-2.5-image-flash/.env.example agnes-2.5-image-flash/.env
+# 提取单个子 Skill（子目录自包含 examples/load_env.py，可直接独立运行）
+cp -r agnes-2.5-image-flash ~/your-skills/
+
+# 从仓库根目录复制 .env 模板到子 Skill 根目录
+cp .env.example ~/your-skills/agnes-2.5-image-flash/.env
+
 # 编辑 .env 填入 API Key，然后直接使用
-python agnes-2.5-image-flash/examples/text-to-image.py
+python ~/your-skills/agnes-2.5-image-flash/examples/text-to-image.py "一只可爱的田园犬在稻田边"
 ```
 
 ## 配置 API Key
 
-复制 `.env.example` 为 `.env` 并填入你的 API Key：
+复制 `.env.example` 为 `.env`（放在 skill 根目录），并填入你的 API Key：
 
 ```bash
 cp .env.example .env
 ```
 
-编辑 `.env` 文件，设置环境变量：
-```bash
-export AGNESAI_API_KEY=sk-你的实际API Key
+编辑 `.env` 文件（KEY=VALUE 格式，无需 export）：
+```
+AGNESAI_API_KEY=sk-你的实际API Key
 ```
 
+> 脚本会自动从所在目录或上级目录查找 `.env`，无需手动 export。
 > 获取 API Key：https://platform.agnes-ai.cn
 
 ## 模型介绍
@@ -146,45 +151,52 @@ python agnes-2.5-video-flash/examples/keyframe-video.py https://example.com/firs
 agnes-flash-suite/
 ├── README.md                          # 本文件
 ├── SKILL.md                           # Skill 主文档
-├── .env.example                       # 环境变量示例
+├── .env.example                       # 环境变量模板（复制为 .env 使用）
+├── .gitignore
 │
 ├── agnes-3.0-flash/                   # Agent 编程模型
 │   ├── SKILL.md                       # Agent 编程模型详细说明
 │   ├── README.md                      # Agent 编程模型简介
 │   └── examples/
-│       ├── basic-chat.py              # 基础聊天示例
-│       ├── image-understanding.py     # 图像理解示例
-│       ├── tool-calling.py            # 工具调用示例
-│       └── thinking-mode.py           # Thinking 模式示例
+│       ├── load_env.py                # .env 自动加载（自包含，可随目录独立使用）
+│       ├── basic-chat.py              # 基础聊天（参数：[用户问题]）
+│       ├── image-understanding.py     # 图像理解（参数：[图片URL]）
+│       ├── tool-calling.py            # 工具调用（参数：[用户问题]）
+│       └── thinking-mode.py           # Thinking 模式（参数：[问题]）
 │
 ├── agnes-2.5-flash/                   # 对话模型
 │   ├── SKILL.md                       # 对话模型详细说明
 │   ├── README.md                      # 对话模型简介
 │   └── examples/
-│       ├── basic-chat.py              # 基础聊天示例
-│       ├── image-understanding.py     # 图像理解示例
-│       ├── tool-calling.py            # 工具调用示例
-│       └── thinking-mode.py           # Thinking 模式示例
+│       ├── load_env.py                # .env 自动加载
+│       ├── basic-chat.py              # 基础聊天（参数：[用户问题]）
+│       ├── image-understanding.py     # 图像理解（参数：[图片URL]）
+│       ├── tool-calling.py            # 工具调用（参数：[用户问题]）
+│       └── thinking-mode.py           # Thinking 模式（参数：[问题]）
 │
 ├── agnes-2.5-image-flash/             # 图像生成（模型 ID: agnes-image-2.5-flash）
 │   ├── SKILL.md                       # 图像生成详细说明
 │   ├── README.md                      # 图像生成简介
 │   └── examples/
-│       ├── text-to-image.py           # 文生图（URL）示例
-│       ├── text-to-image-base64.py    # 文生图（Base64）示例
-│       ├── image-to-image.py          # 图生图示例
-│       └── multi-image-combine.py     # 多图合成示例
+│       ├── load_env.py                # .env 自动加载
+│       ├── text-to-image.py           # 文生图（参数：[提示词] [尺寸] [比例]）
+│       ├── text-to-image-base64.py    # 文生图 Base64（参数：[提示词] [尺寸]）
+│       ├── image-to-image.py          # 图生图（参数：[输入图片URL] [提示词]）
+│       └── multi-image-combine.py     # 多图合成（参数：[图片1URL] [图片2URL] [提示词]）
 │
 └── agnes-2.5-video-flash/             # 视频生成（模型 ID: agnes-video-2.5-flash）
     ├── SKILL.md                       # 视频生成详细说明
     ├── README.md                      # 视频生成简介
     └── examples/
-        ├── text-to-video.py           # 文生视频示例
-        ├── keyframe-video.py          # 首尾帧控制示例
-        ├── image-reference.py         # 图片参考示例
-        ├── audio-reference.py         # 音频参考示例
-        └── query-video.py             # 查询结果示例
+        ├── load_env.py                # .env 自动加载
+        ├── text-to-video.py           # 文生视频（参数：[提示词]）
+        ├── keyframe-video.py          # 首尾帧控制（参数：[首帧URL] [尾帧URL] [提示词]）
+        ├── image-reference.py         # 图片参考（参数：[参考图片URL] [提示词]）
+        ├── audio-reference.py         # 音频参考（参数：[参考音频URL] [提示词]）
+        └── query-video.py             # 查询结果（参数：<video_id> [api_key]）
 ```
+
+> 所有参数均可选：不传参数时使用默认演示内容，传参数时动态替换。
 
 ## 相关文档
 

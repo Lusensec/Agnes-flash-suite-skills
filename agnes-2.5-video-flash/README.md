@@ -4,42 +4,48 @@
 
 ## 功能特性
 
-- ✅ 文生视频
-- ✅ 首尾帧控制
-- ✅ 图片参考（最多 5 张）
-- ✅ 音频参考（最多 3 段）
-- ✅ 多种画幅比例
+- 文生视频
+- 首尾帧控制
+- 图片参考（最多 5 张）
+- 音频参考（最多 3 段）
+- 多种画幅比例
 
 ## 快速开始
 
-### 1. 设置 API Key
+### 1. 配置 API Key
 
-```bash
-export AGNES_API_KEY="sk-..."
+复制 `.env.example` 为 `.env`（放在本 skill 根目录），填入 API Key：
+
 ```
+AGNESAI_API_KEY=sk-你的实际API Key
+```
+
+> 脚本会自动从 `.env` 加载，无需手动 export。获取 API Key：https://platform.agnes-ai.cn
 
 ### 2. 文生视频
 
 ```bash
-curl -X POST "https://api.agnes-ai.cn/v1/videos" \
-  -H "Authorization: Bearer $AGNES_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "agnes-video-2.5-flash",
-    "prompt": "雨后的未来城市街道，霓虹灯倒映在地面",
-    "seconds": "5",
-    "mode": "text",
-    "size": "720P",
-    "aspect_ratio": "16:9"
-  }'
+# 不传参数使用默认示例，传参数则使用你的提示词
+python examples/text-to-video.py "小猫在客厅里追逐激光笔"
 ```
 
-### 3. 查询结果
+### 3. 其他模式
 
 ```bash
-curl "https://api.agnes-ai.cn/agnesapi?video_id=VIDEO_ID&model_name=agnes-video-2.5-flash" \
-  -H "Authorization: Bearer $AGNES_API_KEY"
+# 首尾帧控制
+python examples/keyframe-video.py https://example.com/first.png https://example.com/last.png "人物转身走向窗边"
+
+# 图片参考
+python examples/image-reference.py https://example.com/character.png "以 <Picture 1> 中的角色为参考跳舞"
+
+# 音频参考
+python examples/audio-reference.py https://example.com/beat.mp3 "以 <Audio 1> 的节奏为参考生成夜间驾驶画面"
+
+# 查询任务结果
+python examples/query-video.py <video_id>
 ```
+
+> 视频生成为异步任务：提交后脚本自动轮询并输出视频地址。所有参数均可选。
 
 ## 使用场景
 
@@ -54,6 +60,21 @@ curl "https://api.agnes-ai.cn/agnesapi?video_id=VIDEO_ID&model_name=agnes-video-
 
 - 当前限时免费
 - 原价：¥0.15/秒
+
+## 文件结构
+
+```
+agnes-2.5-video-flash/
+├── SKILL.md                        # 详细说明文档
+├── README.md                       # 本文件
+└── examples/
+    ├── load_env.py                 # .env 自动加载（自包含）
+    ├── text-to-video.py            # 参数：[提示词]
+    ├── keyframe-video.py           # 参数：[首帧URL] [尾帧URL] [提示词]
+    ├── image-reference.py          # 参数：[参考图片URL] [提示词]
+    ├── audio-reference.py          # 参数：[参考音频URL] [提示词]
+    └── query-video.py              # 参数：<video_id> [api_key]
+```
 
 ## 文档
 
