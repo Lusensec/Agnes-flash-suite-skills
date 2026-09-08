@@ -98,76 +98,107 @@ X 2.5 Flash 是 Agnes AI 的视频生成模型，支持多种生成模式：
 
 ### 1. 文生视频
 
-```bash
-curl -sS -X POST "https://api.agnes-ai.cn/v1/videos" \
-  -H "Authorization: Bearer YOUR_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "agnes-video-2.5-flash",
-    "prompt": "雨后的未来城市街道，霓虹灯倒映在地面，一辆银色跑车缓慢驶过，电影级运镜，自然环境声",
-    "seconds": "5",
-    "mode": "text",
-    "size": "720P",
-    "aspect_ratio": "16:9"
-  }'
+```python
+# 运行 python examples/text-to-video.py
+import json, urllib.request, os
+API_KEY = os.environ.get("AGNESAI_API_KEY")
+resp = urllib.request.urlopen(urllib.request.Request(
+    "https://api.agnes-ai.cn/v1/videos",
+    data=json.dumps({
+        "model": "agnes-video-2.5-flash",
+        "prompt": "雨后的未来城市街道，霓虹灯倒映在地面，一辆银色跑车缓慢驶过，电影级运镜，自然环境声",
+        "seconds": "5",
+        "mode": "text",
+        "size": "720P",
+        "aspect_ratio": "16:9"
+    }).encode(),
+    headers={"Authorization": f"Bearer {API_KEY}", "Content-Type": "application/json"},
+    method="POST"
+)).read()
+print(json.loads(resp)["video_id"])
 ```
 
 ### 2. 首尾帧控制
 
-```bash
-curl -sS -X POST "https://api.agnes-ai.cn/v1/videos" \
-  -H "Authorization: Bearer YOUR_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "agnes-video-2.5-flash",
-    "prompt": "人物从首帧姿态自然转身走向窗边，镜头缓慢推进并平滑过渡到尾帧",
-    "seconds": "5",
-    "mode": "keyframe",
-    "size": "720P",
-    "first_frame": "https://example.com/first.png",
-    "last_frame": "https://example.com/last.png"
-  }'
+```python
+# 运行 python examples/keyframe-video.py [首帧URL] [尾帧URL]
+import json, urllib.request, os
+API_KEY = os.environ.get("AGNESAI_API_KEY")
+resp = urllib.request.urlopen(urllib.request.Request(
+    "https://api.agnes-ai.cn/v1/videos",
+    data=json.dumps({
+        "model": "agnes-video-2.5-flash",
+        "prompt": "人物从首帧姿态自然转身走向窗边，镜头缓慢推进并平滑过渡到尾帧",
+        "seconds": "5",
+        "mode": "keyframe",
+        "size": "720P",
+        "first_frame": "https://example.com/first.png",
+        "last_frame": "https://example.com/last.png"
+    }).encode(),
+    headers={"Authorization": f"Bearer {API_KEY}", "Content-Type": "application/json"},
+    method="POST"
+)).read()
+print(json.loads(resp)["video_id"])
 ```
 
 ### 3. 图片参考
 
-```bash
-curl -sS -X POST "https://api.agnes-ai.cn/v1/videos" \
-  -H "Authorization: Bearer YOUR_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "agnes-video-2.5-flash",
-    "prompt": "以 <Picture 1> 中的角色和美术风格为参考，角色在花田中自然奔跑，保持外观一致",
-    "seconds": "5",
-    "mode": "reference",
-    "size": "720P",
-    "aspect_ratio": "16:9",
-    "images": ["https://example.com/character.png"]
-  }'
+```python
+# 运行 python examples/image-reference.py [参考图片URL]
+import json, urllib.request, os
+API_KEY = os.environ.get("AGNESAI_API_KEY")
+resp = urllib.request.urlopen(urllib.request.Request(
+    "https://api.agnes-ai.cn/v1/videos",
+    data=json.dumps({
+        "model": "agnes-video-2.5-flash",
+        "prompt": "以 <Picture 1> 中的角色和美术风格为参考，角色在花田中自然奔跑，保持外观一致",
+        "seconds": "5",
+        "mode": "reference",
+        "size": "720P",
+        "aspect_ratio": "16:9",
+        "images": ["https://example.com/character.png"]
+    }).encode(),
+    headers={"Authorization": f"Bearer {API_KEY}", "Content-Type": "application/json"},
+    method="POST"
+)).read()
+print(json.loads(resp)["video_id"])
 ```
 
 ### 4. 音频参考
 
-```bash
-curl -sS -X POST "https://api.agnes-ai.cn/v1/videos" \
-  -H "Authorization: Bearer YOUR_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "agnes-video-2.5-flash",
-    "prompt": "以 <Audio 1> 的节奏和环境氛围作为参考，生成电影感夜间驾驶画面",
-    "seconds": "5",
-    "mode": "reference",
-    "size": "720P",
-    "aspect_ratio": "16:9",
-    "audios": ["https://example.com/reference-audio.mp3"]
-  }'
+```python
+# 运行 python examples/audio-reference.py [参考音频URL]
+import json, urllib.request, os
+API_KEY = os.environ.get("AGNESAI_API_KEY")
+resp = urllib.request.urlopen(urllib.request.Request(
+    "https://api.agnes-ai.cn/v1/videos",
+    data=json.dumps({
+        "model": "agnes-video-2.5-flash",
+        "prompt": "以 <Audio 1> 的节奏和环境氛围作为参考，生成电影感夜间驾驶画面",
+        "seconds": "5",
+        "mode": "reference",
+        "size": "720P",
+        "aspect_ratio": "16:9",
+        "audios": ["https://example.com/reference-audio.mp3"]
+    }).encode(),
+    headers={"Authorization": f"Bearer {API_KEY}", "Content-Type": "application/json"},
+    method="POST"
+)).read()
+print(json.loads(resp)["video_id"])
 ```
 
 ## 查询任务结果
 
-```bash
-curl -sS "https://api.agnes-ai.cn/agnesapi?video_id=VIDEO_ID&model_name=agnes-video-2.5-flash" \
-  -H "Authorization: Bearer YOUR_API_KEY"
+```python
+# 运行 python examples/query-video.py <video_id>
+import json, urllib.request, os
+API_KEY = os.environ.get("AGNESAI_API_KEY")
+resp = urllib.request.urlopen(urllib.request.Request(
+    f"https://api.agnes-ai.cn/agnesapi?video_id={VIDEO_ID}&model_name=agnes-video-2.5-flash",
+    headers={"Authorization": f"Bearer {API_KEY}"}
+)).read()
+result = json.loads(resp)
+print(result["status"], result.get("url"))
 ```
 
 **响应示例：**

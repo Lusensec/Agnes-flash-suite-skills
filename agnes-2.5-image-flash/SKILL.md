@@ -70,69 +70,74 @@ X 2.5 Flash 是 Agnes AI 最新一代图像模型，整体能力全面超过旧�
 
 ### 1. 文生图
 
-根据文本提示词生成高质量图像。
-
-**请求示例：**
-```bash
-curl -sS -X POST "https://api.agnes-ai.cn/v1/images/generations" \
-  -H "Authorization: Bearer YOUR_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "agnes-image-2.5-flash",
-    "prompt": "A luminous floating city above a misty canyon at sunrise, cinematic realism",
-    "size": "2K",
-    "ratio": "16:9",
-    "extra_body": {
-      "response_format": "url"
-    }
-  }'
+```python
+# 运行 python examples/text-to-image.py
+import json, urllib.request, os
+API_KEY = os.environ.get("AGNESAI_API_KEY")
+resp = urllib.request.urlopen(urllib.request.Request(
+    "https://api.agnes-ai.cn/v1/images/generations",
+    data=json.dumps({
+        "model": "agnes-image-2.5-flash",
+        "prompt": "A luminous floating city above a misty canyon at sunrise, cinematic realism",
+        "size": "2K",
+        "ratio": "16:9",
+        "extra_body": {"response_format": "url"}
+    }).encode(),
+    headers={"Authorization": f"Bearer {API_KEY}", "Content-Type": "application/json"},
+    method="POST"
+)).read()
+print(json.loads(resp)["data"][0]["url"])
 ```
 
 ### 2. 图生图
 
-根据提示词转换或优化现有图像，保留原始构图和主体布局。
-
-**请求示例：**
-```bash
-curl -sS -X POST "https://api.agnes-ai.cn/v1/images/generations" \
-  -H "Authorization: Bearer YOUR_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "agnes-image-2.5-flash",
-    "prompt": "Transform the scene into a rain-soaked cyberpunk night with neon reflections while preserving the original composition",
-    "size": "2K",
-    "ratio": "16:9",
-    "extra_body": {
-      "image": [
-        "https://example.com/input-image.png"
-      ],
-      "response_format": "url"
-    }
-  }'
+```python
+# 运行 python examples/image-to-image.py [输入图片URL]
+import json, urllib.request, os
+API_KEY = os.environ.get("AGNESAI_API_KEY")
+resp = urllib.request.urlopen(urllib.request.Request(
+    "https://api.agnes-ai.cn/v1/images/generations",
+    data=json.dumps({
+        "model": "agnes-image-2.5-flash",
+        "prompt": "Transform the scene into a rain-soaked cyberpunk night with neon reflections while preserving the original composition",
+        "size": "2K",
+        "ratio": "16:9",
+        "extra_body": {
+            "image": ["https://example.com/input-image.png"],
+            "response_format": "url"
+        }
+    }).encode(),
+    headers={"Authorization": f"Bearer {API_KEY}", "Content-Type": "application/json"},
+    method="POST"
+)).read()
+print(json.loads(resp)["data"][0]["url"])
 ```
 
 ### 3. 多图合成
 
-使用多张参考图像组合生成新图像。
-
-**请求示例：**
-```bash
-curl -sS -X POST "https://api.agnes-ai.cn/v1/images/generations" \
-  -H "Authorization: Bearer YOUR_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "agnes-image-2.5-flash",
-    "prompt": "Combine the two characters into an intense fantasy battle scene, dynamic lighting, detailed background, cinematic composition",
-    "size": "2K",
-    "ratio": "1:1",
-    "extra_body": {
-      "image": [
-        "https://example.com/character-1.png",
-        "https://example.com/character-2.png"
-      ],
-      "response_format": "url"
-    }
-  }'
+```python
+# 运行 python examples/multi-image-combine.py [图片1URL] [图片2URL]
+import json, urllib.request, os
+API_KEY = os.environ.get("AGNESAI_API_KEY")
+resp = urllib.request.urlopen(urllib.request.Request(
+    "https://api.agnes-ai.cn/v1/images/generations",
+    data=json.dumps({
+        "model": "agnes-image-2.5-flash",
+        "prompt": "Combine the two characters into an intense fantasy battle scene, dynamic lighting, detailed background, cinematic composition",
+        "size": "2K",
+        "ratio": "1:1",
+        "extra_body": {
+            "image": [
+                "https://example.com/character-1.png",
+                "https://example.com/character-2.png"
+            ],
+            "response_format": "url"
+        }
+    }).encode(),
+    headers={"Authorization": f"Bearer {API_KEY}", "Content-Type": "application/json"},
+    method="POST"
+)).read()
+print(json.loads(resp)["data"][0]["url"])
 ```
 
 ## 响应格式

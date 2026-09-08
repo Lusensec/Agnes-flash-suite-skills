@@ -16,9 +16,9 @@
 cp .env.example .env
 ```
 
-编辑 `.env` 文件：
+编辑 `.env` 文件，设置环境变量：
 ```bash
-AGNES_API_KEY=sk-你的实际 API Key
+export AGNESAI_API_KEY=sk-你的实际API Key
 ```
 
 > 获取 API Key：https://platform.agnes-ai.cn
@@ -86,49 +86,65 @@ AGNES_API_KEY=sk-你的实际 API Key
 
 ---
 
+## 快速开始
+
+所有示例脚本均位于各子 Skill 的 `examples/` 目录，直接运行即可调用 API：
+
+```bash
+# 文生图
+python agnes-2.5-image-flash/examples/text-to-image.py
+
+# 图像理解（可选传图片 URL 参数）
+python agnes-2.5-flash/examples/image-understanding.py https://example.com/image.jpg
+
+# 文生视频
+python agnes-2.5-video-flash/examples/text-to-video.py
+```
+
 ## 文件结构
 
 ```
 agnes-flash-suite/
 ├── README.md                          # 本文件
 ├── SKILL.md                           # Skill 主文档
+├── .env.example                       # 环境变量示例
 │
 ├── agnes-3.0-flash/                   # Agent 编程模型
 │   ├── SKILL.md                       # Agent 编程模型详细说明
 │   ├── README.md                      # Agent 编程模型简介
 │   └── examples/
-│       ├── basic-chat.sh              # 基础聊天示例
-│       ├── image-understanding.sh     # 图像理解示例
-│       ├── tool-calling.sh            # 工具调用示例
-│       └── thinking-mode.sh           # Thinking 模式示例
+│       ├── basic-chat.py              # 基础聊天示例
+│       ├── image-understanding.py     # 图像理解示例
+│       ├── tool-calling.py            # 工具调用示例
+│       └── thinking-mode.py           # Thinking 模式示例
 │
 ├── agnes-2.5-flash/                   # 对话模型
 │   ├── SKILL.md                       # 对话模型详细说明
 │   ├── README.md                      # 对话模型简介
 │   └── examples/
-│       ├── basic-chat.sh              # 基础聊天示例
-│       ├── image-understanding.sh     # 图像理解示例
-│       ├── tool-calling.sh            # 工具调用示例
-│       └── thinking-mode.sh           # Thinking 模式示例
+│       ├── basic-chat.py              # 基础聊天示例
+│       ├── image-understanding.py     # 图像理解示例
+│       ├── tool-calling.py            # 工具调用示例
+│       └── thinking-mode.py           # Thinking 模式示例
 │
 ├── agnes-2.5-image-flash/             # 图像生成（模型 ID: agnes-image-2.5-flash）
 │   ├── SKILL.md                       # 图像生成详细说明
 │   ├── README.md                      # 图像生成简介
 │   └── examples/
-│       ├── text-to-image.sh           # 文生图（URL）示例
-│       ├── text-to-image-base64.sh    # 文生图（Base64）示例
-│       ├── image-to-image.sh          # 图生图示例
-│       └── multi-image-combine.sh     # 多图合成示例
+│       ├── text-to-image.py           # 文生图（URL）示例
+│       ├── text-to-image-base64.py    # 文生图（Base64）示例
+│       ├── image-to-image.py          # 图生图示例
+│       └── multi-image-combine.py     # 多图合成示例
 │
 └── agnes-2.5-video-flash/             # 视频生成（模型 ID: agnes-video-2.5-flash）
     ├── SKILL.md                       # 视频生成详细说明
     ├── README.md                      # 视频生成简介
     └── examples/
-        ├── text-to-video.sh           # 文生视频示例
-        ├── keyframe-video.sh          # 首尾帧控制示例
-        ├── image-reference.sh         # 图片参考示例
-        ├── audio-reference.sh         # 音频参考示例
-        └── query-video.sh             # 查询结果示例
+        ├── text-to-video.py           # 文生视频示例
+        ├── keyframe-video.py          # 首尾帧控制示例
+        ├── image-reference.py         # 图片参考示例
+        ├── audio-reference.py         # 音频参考示例
+        └── query-video.py             # 查询结果示例
 ```
 
 ## 相关文档

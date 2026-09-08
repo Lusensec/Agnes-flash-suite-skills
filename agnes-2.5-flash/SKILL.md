@@ -72,108 +72,98 @@ X 2.5 Flash 是 Agnes AI 的最新一代语言模型，基于 Agnes 2.0 Flash �
 
 ### 1. 基础聊天
 
-```bash
-curl -X POST "https://api.agnes-ai.cn/v1/chat/completions" \
-  -H "Authorization: Bearer YOUR_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "agnes-2.5-flash",
-    "messages": [
-      {
-        "role": "system",
-        "content": "You are a helpful AI assistant."
-      },
-      {
-        "role": "user",
-        "content": "你好，请介绍一下你自己"
-      }
-    ]
-  }'
+```python
+# 运行 python examples/basic-chat.py
+import json, urllib.request, os
+API_KEY = os.environ.get("AGNESAI_API_KEY")
+resp = urllib.request.urlopen(urllib.request.Request(
+    "https://api.agnes-ai.cn/v1/chat/completions",
+    data=json.dumps({
+        "model": "agnes-2.5-flash",
+        "messages": [
+            {"role": "system", "content": "You are a helpful AI assistant."},
+            {"role": "user", "content": "你好，请介绍一下你自己"}
+        ]
+    }).encode(),
+    headers={"Authorization": f"Bearer {API_KEY}", "Content-Type": "application/json"},
+    method="POST"
+)).read()
+print(json.loads(resp)["choices"][0]["message"]["content"])
 ```
 
 ### 2. 图像理解
 
-```bash
-curl -X POST "https://api.agnes-ai.cn/v1/chat/completions" \
-  -H "Authorization: Bearer YOUR_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "agnes-2.5-flash",
-    "messages": [
-      {
-        "role": "user",
-        "content": [
-          {
-            "type": "text",
-            "text": "这张图片里有什么？"
-          },
-          {
-            "type": "image_url",
-            "image_url": {
-              "url": "https://example.com/image.jpg"
-            }
-          }
-        ]
-      }
-    ]
-  }'
+```python
+# 运行 python examples/image-understanding.py [图片URL]
+import json, urllib.request, os
+API_KEY = os.environ.get("AGNESAI_API_KEY")
+resp = urllib.request.urlopen(urllib.request.Request(
+    "https://api.agnes-ai.cn/v1/chat/completions",
+    data=json.dumps({
+        "model": "agnes-2.5-flash",
+        "messages": [{
+            "role": "user",
+            "content": [
+                {"type": "text", "text": "这张图片里有什么？"},
+                {"type": "image_url", "image_url": {"url": "https://example.com/image.jpg"}}
+            ]
+        }]
+    }).encode(),
+    headers={"Authorization": f"Bearer {API_KEY}", "Content-Type": "application/json"},
+    method="POST"
+)).read()
+print(json.loads(resp)["choices"][0]["message"]["content"])
 ```
 
 ### 3. 工具调用
 
-```bash
-curl -X POST "https://api.agnes-ai.cn/v1/chat/completions" \
-  -H "Authorization: Bearer YOUR_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "agnes-2.5-flash",
-    "messages": [
-      {
-        "role": "user",
-        "content": "What is the weather like in Singapore today?"
-      }
-    ],
-    "tools": [
-      {
-        "type": "function",
-        "function": {
-          "name": "get_weather",
-          "description": "Get the current weather for a location",
-          "parameters": {
-            "type": "object",
-            "properties": {
-              "location": {
-                "type": "string",
-                "description": "The city and country"
-              }
-            },
-            "required": ["location"]
-          }
-        }
-      }
-    ]
-  }'
+```python
+# 运行 python examples/tool-calling.py
+import json, urllib.request, os
+API_KEY = os.environ.get("AGNESAI_API_KEY")
+resp = urllib.request.urlopen(urllib.request.Request(
+    "https://api.agnes-ai.cn/v1/chat/completions",
+    data=json.dumps({
+        "model": "agnes-2.5-flash",
+        "messages": [{"role": "user", "content": "What is the weather like in Singapore today?"}],
+        "tools": [{
+            "type": "function",
+            "function": {
+                "name": "get_weather",
+                "description": "Get the current weather for a location",
+                "parameters": {
+                    "type": "object",
+                    "properties": {"location": {"type": "string", "description": "The city and country"}},
+                    "required": ["location"]
+                }
+            }
+        }]
+    }).encode(),
+    headers={"Authorization": f"Bearer {API_KEY}", "Content-Type": "application/json"},
+    method="POST"
+)).read()
+result = json.loads(resp)
+print(json.dumps(result["choices"][0]["message"].get("tool_calls"), indent=2, ensure_ascii=False))
 ```
 
 ### 4. Thinking 模式
 
-```bash
-curl -X POST "https://api.agnes-ai.cn/v1/chat/completions" \
-  -H "Authorization: Bearer YOUR_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "agnes-2.5-flash",
-    "messages": [
-      {
-        "role": "user",
-        "content": "Help me write a Python script to process a CSV file."
-      }
-    ],
-    "chat_template_kwargs": {
-      "enable_thinking": true
-    },
-    "max_tokens": 2048
-  }'
+```python
+# 运行 python examples/thinking-mode.py
+import json, urllib.request, os
+API_KEY = os.environ.get("AGNESAI_API_KEY")
+resp = urllib.request.urlopen(urllib.request.Request(
+    "https://api.agnes-ai.cn/v1/chat/completions",
+    data=json.dumps({
+        "model": "agnes-2.5-flash",
+        "messages": [{"role": "user", "content": "Help me write a Python script to process a CSV file."}],
+        "chat_template_kwargs": {"enable_thinking": True},
+        "max_tokens": 2048
+    }).encode(),
+    headers={"Authorization": f"Bearer {API_KEY}", "Content-Type": "application/json"},
+    method="POST"
+)).read()
+print(json.loads(resp)["choices"][0]["message"]["content"])
 ```
 
 ### 5. 流式输出

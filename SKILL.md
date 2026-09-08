@@ -26,48 +26,43 @@ Agnes Flash 套件是一个多功能 AI 能力平台，整合了四种核心模�
 | **agnes-image-2.5-flash** | `agnes-image-2.5-flash` | 文生图、图生图、多图合成 | 图像创作、设计、编辑 |
 | **agnes-video-2.5-flash** | `agnes-video-2.5-flash` | 文生视频、首尾帧、图片/音频参考 | 视频制作、动画、创意 |
 
-## 快速开始
+## 快速开始（推荐使用 Python）
+
+所有示例脚本均位于各子 Skill 的 `examples/` 目录，直接运行即可调用 API：
+
+```bash
+# 文生图
+python agnes-2.5-image-flash/examples/text-to-image.py
+
+# 图像理解（可选传图片 URL 参数）
+python agnes-2.5-flash/examples/image-understanding.py https://example.com/image.jpg
+
+# 文生视频
+python agnes-2.5-video-flash/examples/text-to-video.py
+```
+
+API Key 从环境变量 `AGNESAI_API_KEY` 读取，或直接在脚本顶部替换为实际 Key。
+
+---
+
+## 各子 Skill 详情
 
 ### 1. Agent 编程模型 (agnes-3.0-flash)
 
-```bash
-# 基础任务执行
-curl -X POST "https://api.agnes-ai.cn/v1/chat/completions" \
-  -H "Authorization: Bearer YOUR_API_KEY" \
-  -d '{
-    "model": "agnes-3.0-flash",
-    "messages": [{"role": "user", "content": "请说明智能体应如何选择并调用工具"}],
-    "max_tokens": 1024
-  }'
-
-# 工具调用
-curl -X POST "https://api.agnes-ai.cn/v1/chat/completions" \
-  -H "Authorization: Bearer YOUR_API_KEY" \
-  -d '{
-    "model": "agnes-3.0-flash",
-    "messages": [{"role": "user", "content": "上海现在的天气怎么样？"}],
-    "tools": [{
-      "type": "function",
-      "function": {
-        "name": "get_weather",
-        "description": "获取指定城市当前天气。",
-        "parameters": {
-          "type": "object",
-          "properties": {"city": {"type": "string"}},
-          "required": ["city"]
-        }
-      }
-    }]
-  }'
-
-# Thinking 模式
-curl -X POST "https://api.agnes-ai.cn/v1/chat/completions" \
-  -H "Authorization: Bearer YOUR_API_KEY" \
-  -d '{
-    "model": "agnes-3.0-flash",
-    "messages": [{"role": "user", "content": "请规划此仓库任务的实现步骤"}],
-    "chat_template_kwargs": {"enable_thinking": true}
-  }'
+```python
+# 基础任务执行（保存为 examples/basic-chat.py，直接运行）
+import json, urllib.request, os
+API_KEY = os.environ.get("AGNESAI_API_KEY")
+resp = urllib.request.urlopen(urllib.request.Request(
+    "https://api.agnes-ai.cn/v1/chat/completions",
+    data=json.dumps({"model":"agnes-3.0-flash","messages":[
+        {"role":"system","content":"You are a helpful AI assistant."},
+        {"role":"user","content":"Explain how autonomous agents use tools to complete tasks."}
+    ],"temperature":0.7,"max_tokens":1024}).encode(),
+    headers={"Authorization":f"Bearer {API_KEY}","Content-Type":"application/json"},
+    method="POST"
+)).read()
+print(json.loads(resp)["choices"][0]["message"]["content"])
 ```
 
 **文档**: [agnes-3.0-flash/SKILL.md](./agnes-3.0-flash/SKILL.md)
@@ -76,38 +71,43 @@ curl -X POST "https://api.agnes-ai.cn/v1/chat/completions" \
 
 ### 3. 对话模型 (agnes-2.5-flash)
 
-```bash
+```python
 # 基础聊天
-curl -X POST "https://api.agnes-ai.cn/v1/chat/completions" \
-  -H "Authorization: Bearer YOUR_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "agnes-2.5-flash",
-    "messages": [{"role": "user", "content": "你好，请介绍一下自己"}]
-  }'
+import json, urllib.request, os
+API_KEY = os.environ.get("AGNESAI_API_KEY")
+resp = urllib.request.urlopen(urllib.request.Request(
+    "https://api.agnes-ai.cn/v1/chat/completions",
+    data=json.dumps({"model":"agnes-2.5-flash","messages":[
+        {"role":"user","content":"你好，请介绍一下自己"}
+    ]}).encode(),
+    headers={"Authorization":f"Bearer {API_KEY}","Content-Type":"application/json"},
+    method="POST"
+)).read()
+print(json.loads(resp)["choices"][0]["message"]["content"])
 
 # 图像理解
-curl -X POST "https://api.agnes-ai.cn/v1/chat/completions" \
-  -H "Authorization: Bearer YOUR_API_KEY" \
-  -d '{
-    "model": "agnes-2.5-flash",
-    "messages": [{
-      "role": "user",
-      "content": [
-        {"type": "text", "text": "这张图片里有什么？"},
-        {"type": "image_url", "image_url": {"url": "https://example.com/image.jpg"}}
-      ]
-    }]
-  }'
+resp = urllib.request.urlopen(urllib.request.Request(
+    "https://api.agnes-ai.cn/v1/chat/completions",
+    data=json.dumps({"model":"agnes-2.5-flash","messages":[{
+        "role":"user",
+        "content":[
+            {"type":"text","text":"这张图片里有什么？"},
+            {"type":"image_url","image_url":{"url":"https://example.com/image.jpg"}}
+        ]
+    }]}).encode(),
+    headers={"Authorization":f"Bearer {API_KEY}","Content-Type":"application/json"},
+    method="POST"
+)).read()
 
 # Thinking 模式
-curl -X POST "https://api.agnes-ai.cn/v1/chat/completions" \
-  -H "Authorization: Bearer YOUR_API_KEY" \
-  -d '{
-    "model": "agnes-2.5-flash",
-    "messages": [{"role": "user", "content": "帮我写一个 Python 脚本"}],
-    "chat_template_kwargs": {"enable_thinking": true}
-  }'
+resp = urllib.request.urlopen(urllib.request.Request(
+    "https://api.agnes-ai.cn/v1/chat/completions",
+    data=json.dumps({"model":"agnes-2.5-flash","messages":[
+        {"role":"user","content":"帮我写一个 Python 脚本"}
+    ],"chat_template_kwargs":{"enable_thinking":True}}).encode(),
+    headers={"Authorization":f"Bearer {API_KEY}","Content-Type":"application/json"},
+    method="POST"
+)).read()
 ```
 
 **文档**: [agnes-2.5-flash/SKILL.md](./agnes-2.5-flash/SKILL.md)
@@ -116,43 +116,33 @@ curl -X POST "https://api.agnes-ai.cn/v1/chat/completions" \
 
 ### 4. 图像生成 (agnes-image-2.5-flash)
 
-```bash
+```python
 # 文生图
-curl -X POST "https://api.agnes-ai.cn/v1/images/generations" \
-  -H "Authorization: Bearer YOUR_API_KEY" \
-  -d '{
-    "model": "agnes-image-2.5-flash",
-    "prompt": "一只可爱的田园犬在稻田边",
-    "size": "2K",
-    "ratio": "16:9",
-    "extra_body": {"response_format": "url"}
-  }'
+import json, urllib.request, os
+API_KEY = os.environ.get("AGNESAI_API_KEY")
+resp = urllib.request.urlopen(urllib.request.Request(
+    "https://api.agnes-ai.cn/v1/images/generations",
+    data=json.dumps({"model":"agnes-image-2.5-flash","prompt":"一只可爱的田园犬在稻田边","size":"2K","ratio":"16:9","extra_body":{"response_format":"url"}}).encode(),
+    headers={"Authorization":f"Bearer {API_KEY}","Content-Type":"application/json"},
+    method="POST"
+)).read()
+print(json.loads(resp)["data"][0]["url"])
 
 # 图生图
-curl -X POST "https://api.agnes-ai.cn/v1/images/generations" \
-  -H "Authorization: Bearer YOUR_API_KEY" \
-  -d '{
-    "model": "agnes-image-2.5-flash",
-    "prompt": "转换为赛博朋克风格",
-    "size": "2K",
-    "extra_body": {
-      "image": ["https://example.com/input.png"],
-      "response_format": "url"
-    }
-  }'
+resp = urllib.request.urlopen(urllib.request.Request(
+    "https://api.agnes-ai.cn/v1/images/generations",
+    data=json.dumps({"model":"agnes-image-2.5-flash","prompt":"转换为赛博朋克风格","size":"2K","extra_body":{"image":["https://example.com/input.png"],"response_format":"url"}}).encode(),
+    headers={"Authorization":f"Bearer {API_KEY}","Content-Type":"application/json"},
+    method="POST"
+)).read()
 
 # 多图合成
-curl -X POST "https://api.agnes-ai.cn/v1/images/generations" \
-  -H "Authorization: Bearer YOUR_API_KEY" \
-  -d '{
-    "model": "agnes-image-2.5-flash",
-    "prompt": "将两张图合成",
-    "size": "2K",
-    "extra_body": {
-      "image": ["https://example.com/img1.png", "https://example.com/img2.png"],
-      "response_format": "url"
-    }
-  }'
+resp = urllib.request.urlopen(urllib.request.Request(
+    "https://api.agnes-ai.cn/v1/images/generations",
+    data=json.dumps({"model":"agnes-image-2.5-flash","prompt":"将两张图合成","size":"2K","extra_body":{"image":["https://example.com/img1.png","https://example.com/img2.png"],"response_format":"url"}}).encode(),
+    headers={"Authorization":f"Bearer {API_KEY}","Content-Type":"application/json"},
+    method="POST"
+)).read()
 ```
 
 **文档**: [agnes-2.5-image-flash/SKILL.md](./agnes-2.5-image-flash/SKILL.md)
@@ -161,47 +151,41 @@ curl -X POST "https://api.agnes-ai.cn/v1/images/generations" \
 
 ### 5. 视频生成 (agnes-video-2.5-flash)
 
-```bash
+```python
 # 文生视频
-curl -X POST "https://api.agnes-ai.cn/v1/videos" \
-  -H "Authorization: Bearer YOUR_API_KEY" \
-  -d '{
-    "model": "agnes-video-2.5-flash",
-    "prompt": "小猫在客厅跳舞",
-    "seconds": "5",
-    "mode": "text",
-    "size": "720P",
-    "aspect_ratio": "16:9"
-  }'
+import json, urllib.request, os
+API_KEY = os.environ.get("AGNESAI_API_KEY")
+resp = urllib.request.urlopen(urllib.request.Request(
+    "https://api.agnes-ai.cn/v1/videos",
+    data=json.dumps({"model":"agnes-video-2.5-flash","prompt":"小猫在客厅跳舞","seconds":"5","mode":"text","size":"720P","aspect_ratio":"16:9"}).encode(),
+    headers={"Authorization":f"Bearer {API_KEY}","Content-Type":"application/json"},
+    method="POST"
+)).read()
+video_id = json.loads(resp)["video_id"]
 
 # 首尾帧控制
-curl -X POST "https://api.agnes-ai.cn/v1/videos" \
-  -H "Authorization: Bearer YOUR_API_KEY" \
-  -d '{
-    "model": "agnes-video-2.5-flash",
-    "prompt": "人物转身走向窗边",
-    "seconds": "5",
-    "mode": "keyframe",
-    "first_frame": "https://example.com/first.png",
-    "last_frame": "https://example.com/last.png"
-  }'
+resp = urllib.request.urlopen(urllib.request.Request(
+    "https://api.agnes-ai.cn/v1/videos",
+    data=json.dumps({"model":"agnes-video-2.5-flash","prompt":"人物转身走向窗边","seconds":"5","mode":"keyframe","first_frame":"https://example.com/first.png","last_frame":"https://example.com/last.png"}).encode(),
+    headers={"Authorization":f"Bearer {API_KEY}","Content-Type":"application/json"},
+    method="POST"
+)).read()
 
 # 图片参考
-curl -X POST "https://api.agnes-ai.cn/v1/videos" \
-  -H "Authorization: Bearer YOUR_API_KEY" \
-  -d '{
-    "model": "agnes-video-2.5-flash",
-    "prompt": "以 <Picture 1> 中的角色为参考跳舞",
-    "seconds": "5",
-    "mode": "reference",
-    "images": ["https://example.com/character.png"]
-  }'
+resp = urllib.request.urlopen(urllib.request.Request(
+    "https://api.agnes-ai.cn/v1/videos",
+    data=json.dumps({"model":"agnes-video-2.5-flash","prompt":"以 <Picture 1> 中的角色为参考跳舞","seconds":"5","mode":"reference","images":["https://example.com/character.png"]}).encode(),
+    headers={"Authorization":f"Bearer {API_KEY}","Content-Type":"application/json"},
+    method="POST"
+)).read()
 ```
 
 **查询任务**:
-```bash
-curl "https://api.agnes-ai.cn/agnesapi?video_id=VIDEO_ID&model_name=agnes-video-2.5-flash" \
-  -H "Authorization: Bearer YOUR_API_KEY"
+```python
+resp = urllib.request.urlopen(urllib.request.Request(
+    f"https://api.agnes-ai.cn/agnesapi?video_id=VIDEO_ID&model_name=agnes-video-2.5-flash",
+    headers={"Authorization":f"Bearer {API_KEY}"}
+)).read()
 ```
 
 **文档**: [agnes-2.5-video-flash/SKILL.md](./agnes-2.5-video-flash/SKILL.md)
@@ -212,75 +196,54 @@ curl "https://api.agnes-ai.cn/agnesapi?video_id=VIDEO_ID&model_name=agnes-video-
 
 ### 从文字到视频的完整创作流程
 
-```bash
-# 1. 用对话模型生成创意描述
-# 2. 用图像模型生成关键帧
-# 3. 用视频模型生成动态视频
-```
+```python
+import json, urllib.request, os, time
 
-**示例**: 创作一个"田园犬和狸花猫在大山背景下"的短视频
+API_KEY = os.environ.get("AGNESAI_API_KEY")
 
-```bash
 # Step 1: 生成田园犬图片
-curl -X POST "https://api.agnes-ai.cn/v1/images/generations" \
-  -H "Authorization: Bearer YOUR_API_KEY" \
-  -d '{
-    "model": "agnes-image-2.5-flash",
-    "prompt": "一只可爱的田园犬在阳光明媚的乡村田园中",
-    "size": "2K",
-    "ratio": "16:9",
-    "extra_body": {"response_format": "url"}
-  }'
+def gen_image(prompt, size="2K", ratio="16:9"):
+    resp = urllib.request.urlopen(urllib.request.Request(
+        "https://api.agnes-ai.cn/v1/images/generations",
+        data=json.dumps({"model":"agnes-image-2.5-flash","prompt":prompt,"size":size,"ratio":ratio,"extra_body":{"response_format":"url"}}).encode(),
+        headers={"Authorization":f"Bearer {API_KEY}","Content-Type":"application/json"},
+        method="POST"
+    )).read()
+    return json.loads(resp)["data"][0]["url"]
 
 # Step 2: 生成狸花猫图片
-curl -X POST "https://api.agnes-ai.cn/v1/images/generations" \
-  -H "Authorization: Bearer YOUR_API_KEY" \
-  -d '{
-    "model": "agnes-image-2.5-flash",
-    "prompt": "一只漂亮的狸花猫在阳光斑驳的老槐树下",
-    "size": "2K",
-    "ratio": "16:9",
-    "extra_body": {"response_format": "url"}
-  }'
+url1 = gen_image("一只可爱的田园犬在阳光明媚的乡村田园中")
+url2 = gen_image("一只漂亮的狸花猫在阳光斑驳的老槐树下")
 
 # Step 3: 多图合成
-curl -X POST "https://api.agnes-ai.cn/v1/images/generations" \
-  -H "Authorization: Bearer YOUR_API_KEY" \
-  -d '{
-    "model": "agnes-image-2.5-flash",
-    "prompt": "田园犬和狸花猫在大山背景下和谐共处",
-    "size": "2K",
-    "ratio": "16:9",
-    "extra_body": {
-      "image": ["URL_1", "URL_2"],
-      "response_format": "url"
-    }
-  }'
+merged_url = gen_image(
+    "田园犬和狸花猫在大山背景下和谐共处",
+    extra_body={"image":[url1,url2],"response_format":"url"}
+)
 
 # Step 4: 使用合成图生成视频
-curl -X POST "https://api.agnes-ai.cn/v1/videos" \
-  -H "Authorization: Bearer YOUR_API_KEY" \
-  -d '{
-    "model": "agnes-video-2.5-flash",
-    "prompt": "田园犬和狸花猫在大山背景下快乐玩耍",
-    "seconds": "5",
-    "mode": "reference",
-    "images": ["合成图URL"]
-  }'
+resp = urllib.request.urlopen(urllib.request.Request(
+    "https://api.agnes-ai.cn/v1/videos",
+    data=json.dumps({"model":"agnes-video-2.5-flash","prompt":"田园犬和狸花猫在大山背景下快乐玩耍","seconds":"5","mode":"reference","images":[merged_url]}).encode(),
+    headers={"Authorization":f"Bearer {API_KEY}","Content-Type":"application/json"},
+    method="POST"
+)).read()
+video_id = json.loads(resp)["video_id"]
+print(f"视频任务已提交: {video_id}")
 ```
 
 ---
 
 ## 技术规格对比
 
-| 特性 | 对话模型 | 图像模型 | 视频模型 |
-|------|----------|----------|----------|
-| **模型 ID** | `agnes-3.0-flash` | `agnes-2.5-flash` | `agnes-image-2.5-flash` | `agnes-video-2.5-flash` |
-| **API 端点** | `/v1/chat/completions` | `/v1/chat/completions` | `/v1/images/generations` | `/v1/videos` |
-| **上下文** | 512K | 512K | - | - |
-| **最大输出** | 65.5K | 65.5K | - | - |
-| **超时** | 60s | 60s | 360s | 600s |
-| **计费** | 免费 | 免费 | 免费 | 免费 |
+| 特性 | agnes-3.0-flash / agnes-2.5-flash | agnes-image-2.5-flash | agnes-video-2.5-flash |
+|------|-----------------------------------|-----------------------|-----------------------|
+| **模型 ID** | `agnes-3.0-flash` / `agnes-2.5-flash` | `agnes-image-2.5-flash` | `agnes-video-2.5-flash` |
+| **API 端点** | `/v1/chat/completions` | `/v1/images/generations` | `/v1/videos` |
+| **上下文** | 512K | - | - |
+| **最大输出** | 65.5K | - | - |
+| **超时** | 60s | 360s | 600s |
+| **计费** | 免费 | 免费 | 免费 |
 
 ---
 
@@ -312,35 +275,35 @@ agnes-flash-suite/
 │   ├── SKILL.md
 │   ├── README.md
 │   └── examples/
-│       ├── basic-chat.sh
-│       ├── image-understanding.sh
-│       ├── tool-calling.sh
-│       └── thinking-mode.sh
+│       ├── basic-chat.py
+│       ├── image-understanding.py
+│       ├── tool-calling.py
+│       └── thinking-mode.py
 ├── agnes-2.5-flash/                  # 对话模型子 Skill
 │   ├── SKILL.md
 │   ├── README.md
 │   └── examples/
-│       ├── basic-chat.sh
-│       ├── image-understanding.sh
-│       ├── tool-calling.sh
-│       └── thinking-mode.sh
+│       ├── basic-chat.py
+│       ├── image-understanding.py
+│       ├── tool-calling.py
+│       └── thinking-mode.py
 ├── agnes-2.5-image-flash/            # 图像生成子 Skill
 │   ├── SKILL.md
 │   ├── README.md
 │   └── examples/
-│       ├── text-to-image.sh
-│       ├── text-to-image-base64.sh
-│       ├── image-to-image.sh
-│       └── multi-image-combine.sh
+│       ├── text-to-image.py
+│       ├── text-to-image-base64.py
+│       ├── image-to-image.py
+│       └── multi-image-combine.py
 └── agnes-2.5-video-flash/            # 视频生成子 Skill
     ├── SKILL.md
     ├── README.md
     └── examples/
-        ├── text-to-video.sh
-        ├── keyframe-video.sh
-        ├── image-reference.sh
-        ├── audio-reference.sh
-        └── query-video.sh
+        ├── text-to-video.py
+        ├── keyframe-video.py
+        ├── image-reference.py
+        ├── audio-reference.py
+        └── query-video.py
 ```
 
 ---
