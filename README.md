@@ -9,7 +9,7 @@
 克隆整个仓库，Agent 可调用所有四种模型能力：
 
 ```
-请安装 Agnes AI Skill：https://github.com/Lusensec/agnes-flash-suite-skills
+请安装 Agnes AI Skill：https://github.com/Lusensec/Agnes-flash-suite-skills
 ```
 
 ### 方式二：单独安装（按需选择）
@@ -27,8 +27,8 @@
 
 ```bash
 # 从 GitHub 下载仓库
-git clone https://github.com/Lusensec/agnes-flash-suite-skills.git
-cd agnes-flash-suite-skills
+git clone https://github.com/Lusensec/Agnes-flash-suite-skills.git
+cd Agnes-flash-suite-skills
 
 # 提取单个子 Skill（子目录自包含 examples/load_env.py，可直接独立运行）
 cp -r agnes-2.5-image-flash ~/your-skills/
@@ -144,6 +144,8 @@ python agnes-2.5-video-flash/examples/keyframe-video.py https://example.com/firs
 ```
 
 > 不传参数时使用默认演示内容，方便快速体验。
+>
+> **视频生成耗时提示：** 视频类任务通常需 **2–5 分钟**（明显慢于图像/文本，属正常）。轮询时进度恒显示 10%，完成后跳到 100%（服务端仅两档，中间不细分），请勿误判为卡住。
 
 ## 文件结构
 

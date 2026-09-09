@@ -59,7 +59,7 @@ if not video_id:
     exit(1)
 
 print(f"[OK] 任务已提交，video_id: {video_id}")
-print("开始轮询查询结果...")
+print("开始轮询查询结果（视频生成通常需要 2-5 分钟）...")
 
 MAX_RETRIES = 120
 RETRY_INTERVAL = 5
