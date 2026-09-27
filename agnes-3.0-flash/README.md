@@ -48,8 +48,13 @@ python examples/tool-calling.py "查询新加坡今天的天气"
 ### 5. Thinking 模式
 
 ```bash
+# 不传思考等级则不设置（默认）；可选等级：none/minimal/low/medium/high/xhigh/max
 python examples/thinking-mode.py "帮我规划这个仓库任务的实现步骤"
+python examples/thinking-mode.py "复杂多步智能体任务" "xhigh"
 ```
+
+> 思考等级通过顶层 `reasoning_effort` 参数控制。3.0 支持
+> `none/minimal/low/medium/high/xhigh/max` 7 档。任务越复杂可越高设置等级。
 
 > 所有参数均可选：不传参数时使用默认演示内容，传参数时动态替换。
 
@@ -100,7 +105,7 @@ agnes-3.0-flash/
     ├── basic-chat.py               # 参数：[用户问题]
     ├── image-understanding.py      # 参数：[图片URL]
     ├── tool-calling.py             # 参数：[用户问题]
-    └── thinking-mode.py            # 参数：[问题]
+    └── thinking-mode.py            # 参数：[问题] [思考等级]
 ```
 
 ## 文档

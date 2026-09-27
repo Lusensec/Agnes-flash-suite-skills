@@ -67,7 +67,7 @@ AGNESAI_API_KEY=sk-你的实际API Key
 | **上下文窗口** | 512K |
 | **最大输出** | 65.5K |
 | **核心方向** | Agnes Code 任务执行、工具调用与编排、指令与上下文遵循、可信交付 |
-| **支持功能** | 聊天补全、图像理解、工具调用、Thinking 模式、流式输出 |
+| **支持功能** | 聊天补全、图像理解、工具调用、Thinking 模式（思考等级 7 档）、流式输出 |
 | **API 端点** | `POST /v1/chat/completions`、`POST /v1/responses`、`POST /v1/messages` |
 
 **使用场景：** 复杂 Agent 任务、代码智能体、长任务多轮执行、工具编排、可信交付
@@ -82,7 +82,7 @@ AGNESAI_API_KEY=sk-你的实际API Key
 |------|------|
 | **上下文窗口** | 512K |
 | **最大输出** | 65.5K |
-| **支持功能** | 聊天补全、图像理解、工具调用、Thinking 模式、流式输出 |
+| **支持功能** | 聊天补全、图像理解、工具调用、Thinking 模式（思考等级 5 档）、流式输出 |
 | **API 端点** | `POST /v1/chat/completions` |
 
 **使用场景：** AI 助手、自主智能体、代码生成、图像理解、客服机器人
@@ -164,7 +164,7 @@ agnes-flash-suite/
 │       ├── basic-chat.py              # 基础聊天（参数：[用户问题]）
 │       ├── image-understanding.py     # 图像理解（参数：[图片URL]）
 │       ├── tool-calling.py            # 工具调用（参数：[用户问题]）
-│       └── thinking-mode.py           # Thinking 模式（参数：[问题]）
+│       └── thinking-mode.py           # Thinking 模式（参数：[问题] [思考等级]）
 │
 ├── agnes-2.5-flash/                   # 对话模型
 │   ├── SKILL.md                       # 对话模型详细说明
@@ -174,7 +174,7 @@ agnes-flash-suite/
 │       ├── basic-chat.py              # 基础聊天（参数：[用户问题]）
 │       ├── image-understanding.py     # 图像理解（参数：[图片URL]）
 │       ├── tool-calling.py            # 工具调用（参数：[用户问题]）
-│       └── thinking-mode.py           # Thinking 模式（参数：[问题]）
+│       └── thinking-mode.py           # Thinking 模式（参数：[问题] [思考等级]）
 │
 ├── agnes-2.5-image-flash/             # 图像生成（模型 ID: agnes-image-2.5-flash）
 │   ├── SKILL.md                       # 图像生成详细说明

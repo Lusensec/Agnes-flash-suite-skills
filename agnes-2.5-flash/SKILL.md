@@ -47,6 +47,7 @@ Agnes 2.5 Flash 是 Agnes AI 的最新一代语言模型，基于 Agnes 2.0 Flas
 | `tools` | array | ❌ | 工具调用定义 |
 | `tool_choice` | string/object | ❌ | 工具选择控制 |
 | `chat_template_kwargs` | object | ❌ | 启用 Thinking 等扩展能力 |
+| `reasoning_effort` | string | ❌ | 思考等级（顶层参数）：`none` / `low` / `medium` / `high` / `max`，默认不设置（`minimal`/`xhigh` 不支持） |
 
 ### 图像输入格式
 
@@ -149,22 +150,39 @@ print(json.dumps(result["choices"][0]["message"].get("tool_calls"), indent=2, en
 ### 4. Thinking 模式
 
 ```python
-# 运行 python examples/thinking-mode.py [问题]
+# 运行 python examples/thinking-mode.py [问题] [思考等级]
 import json, urllib.request, os
 API_KEY = os.environ.get("AGNESAI_API_KEY")
+payload = {
+    "model": "agnes-2.5-flash",
+    "messages": [{"role": "user", "content": "Help me write a Python script to process a CSV file."}],
+    "chat_template_kwargs": {"enable_thinking": True},
+    "max_tokens": 2048
+}
+# 可选：设置思考等级（默认不设置）
+# payload["reasoning_effort"] = "high"
 resp = urllib.request.urlopen(urllib.request.Request(
     "https://api.agnes-ai.cn/v1/chat/completions",
-    data=json.dumps({
-        "model": "agnes-2.5-flash",
-        "messages": [{"role": "user", "content": "Help me write a Python script to process a CSV file."}],
-        "chat_template_kwargs": {"enable_thinking": True},
-        "max_tokens": 2048
-    }).encode(),
+    data=json.dumps(payload).encode(),
     headers={"Authorization": f"Bearer {API_KEY}", "Content-Type": "application/json"},
     method="POST"
 )).read()
 print(json.loads(resp)["choices"][0]["message"]["content"])
 ```
+
+#### 思考等级（`reasoning_effort`，顶层参数）
+
+Agnes 2.5 Flash 支持 **5 个思考等级**（默认请求不设置思考等级）：
+
+| 等级 | 是否支持 | 说明 |
+|------|---------|------|
+| `none` | ✅ | 完全关闭思考 |
+| `low` | ✅ | 低强度思考 |
+| `medium` | ✅ | 中等强度思考 |
+| `high` | ✅ | 高强度思考 |
+| `max` | ✅ | 最大强度思考 |
+
+> ⚠️ 2.5 模型**不支持 `minimal` 和 `xhigh`**，传入会返回 HTTP 400 错误。任务越复杂可越高设置等级，简单任务用 `none`/`low` 更快更省。
 
 ### 5. 流式输出
 
@@ -288,6 +306,7 @@ with urllib.request.urlopen(req) as resp:
 - [ ] 图像输入使用公开可访问的 `image_url`
 - [ ] 流式响应设置 `stream: true`
 - [ ] 启用 Thinking 模式使用 `chat_template_kwargs.enable_thinking: true`
+- [ ] 需要控制思考强度时，顶层加 `reasoning_effort`（`none`/`low`/`medium`/`high`/`max`），默认不设置；`minimal`/`xhigh` 会 400
 
 ## 相关文档
 

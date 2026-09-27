@@ -122,6 +122,9 @@ resp = urllib.request.urlopen(urllib.request.Request(
 )).read()
 ```
 
+> **思考等级**：顶层 `reasoning_effort` 参数。2.5 支持 `none/low/medium/high/max`（`minimal`/`xhigh` 会 400）；
+> 3.0 支持 `none/minimal/low/medium/high/xhigh/max` 共 7 档。默认不设置。详见各子 Skill 文档。
+
 **文档**: [agnes-2.5-flash/SKILL.md](./agnes-2.5-flash/SKILL.md)
 
 ---
@@ -293,7 +296,7 @@ agnes-flash-suite/
 │       ├── basic-chat.py             # 参数：[用户问题]
 │       ├── image-understanding.py    # 参数：[图片URL]
 │       ├── tool-calling.py           # 参数：[用户问题]
-│       └── thinking-mode.py          # 参数：[问题]
+│       └── thinking-mode.py          # 参数：[问题] [思考等级]
 ├── agnes-2.5-flash/                  # 对话模型子 Skill
 │   ├── SKILL.md
 │   ├── README.md
@@ -302,7 +305,7 @@ agnes-flash-suite/
 │       ├── basic-chat.py             # 参数：[用户问题]
 │       ├── image-understanding.py    # 参数：[图片URL]
 │       ├── tool-calling.py           # 参数：[用户问题]
-│       └── thinking-mode.py          # 参数：[问题]
+│       └── thinking-mode.py          # 参数：[问题] [思考等级]
 ├── agnes-2.5-image-flash/            # 图像生成子 Skill
 │   ├── SKILL.md
 │   ├── README.md

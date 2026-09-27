@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
 """
 Thinking 模式示例 - 使用 agnes-3.0-flash 进行深度推理
-用法：python thinking-mode.py [问题]
+用法：python thinking-mode.py [问题] [思考等级]
+
+思考等级（可选，reasoning_effort 顶层参数）：
+  none / minimal / low / medium / high / xhigh / max
+不传则不设置思考等级（默认行为）。
 """
 
 import json
@@ -16,9 +20,17 @@ API_KEY = os.environ.get("AGNESAI_API_KEY", "your-api-key-here")
 BASE_URL = "https://api.agnes-ai.cn/v1"
 
 USER_MESSAGE = sys.argv[1] if len(sys.argv) > 1 else "Help me write a Python script to process a CSV file and generate a summary report."
+THINKING_LEVEL = sys.argv[2] if len(sys.argv) > 2 else None
+
+VALID_LEVELS = ("none", "minimal", "low", "medium", "high", "xhigh", "max")
+if THINKING_LEVEL and THINKING_LEVEL not in VALID_LEVELS:
+    print(f"[ERR] 无效的思考等级: {THINKING_LEVEL}，可选值: {'/'.join(VALID_LEVELS)}")
+    exit(1)
 
 print("发送 Thinking 模式请求...")
 print(f"  用户: {USER_MESSAGE}")
+if THINKING_LEVEL:
+    print(f"  思考等级: {THINKING_LEVEL}")
 
 payload = {
     "model": "agnes-3.0-flash",
@@ -28,6 +40,9 @@ payload = {
     "chat_template_kwargs": {"enable_thinking": True},
     "max_tokens": 2048
 }
+# 默认不设置思考等级；指定后通过顶层 reasoning_effort 控制思考强度
+if THINKING_LEVEL:
+    payload["reasoning_effort"] = THINKING_LEVEL
 
 req = urllib.request.Request(
     f"{BASE_URL}/chat/completions",

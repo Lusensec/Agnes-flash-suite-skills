@@ -53,6 +53,7 @@ Agnes 3.0 Flash 是 Agnes AI 全新一代升级文本模型，面向 Agent 编�
 | `tools` | array | ❌ | 工具调用定义 |
 | `tool_choice` | string/object | ❌ | 工具选择控制 |
 | `chat_template_kwargs` | object | ❌ | 启用 Thinking 等扩展能力 |
+| `reasoning_effort` | string | ❌ | 思考等级（顶层参数）：`none` / `minimal` / `low` / `medium` / `high` / `xhigh` / `max`，默认不设置 |
 
 ### 图像输入格式
 
@@ -155,22 +156,41 @@ print(json.dumps(result["choices"][0]["message"].get("tool_calls"), indent=2, en
 ### 4. Thinking 模式
 
 ```python
-# 运行 python examples/thinking-mode.py [问题]
+# 运行 python examples/thinking-mode.py [问题] [思考等级]
 import json, urllib.request, os
 API_KEY = os.environ.get("AGNESAI_API_KEY")
+payload = {
+    "model": "agnes-3.0-flash",
+    "messages": [{"role": "user", "content": "帮我规划这个仓库任务的实现步骤"}],
+    "chat_template_kwargs": {"enable_thinking": True},
+    "max_tokens": 2048
+}
+# 可选：设置思考等级（默认不设置）
+# payload["reasoning_effort"] = "high"
 resp = urllib.request.urlopen(urllib.request.Request(
     "https://api.agnes-ai.cn/v1/chat/completions",
-    data=json.dumps({
-        "model": "agnes-3.0-flash",
-        "messages": [{"role": "user", "content": "帮我规划这个仓库任务的实现步骤"}],
-        "chat_template_kwargs": {"enable_thinking": True},
-        "max_tokens": 2048
-    }).encode(),
+    data=json.dumps(payload).encode(),
     headers={"Authorization": f"Bearer {API_KEY}", "Content-Type": "application/json"},
     method="POST"
 )).read()
 print(json.loads(resp)["choices"][0]["message"]["content"])
 ```
+
+#### 思考等级（`reasoning_effort`，顶层参数）
+
+Agnes 3.0 Flash 支持 **7 个思考等级**（默认请求不设置思考等级）：
+
+| 等级 | 说明 |
+|------|------|
+| `none` | 完全关闭思考 |
+| `minimal` | 最少量思考 |
+| `low` | 低强度思考 |
+| `medium` | 中等强度思考 |
+| `high` | 高强度思考 |
+| `xhigh` | 极高强度思考 |
+| `max` | 最大强度思考 |
+
+> 任务越复杂（调试、重构、多步骤智能体任务），可越高设置思考等级；简单任务用 `none`/`low` 更快更省。
 
 ### 5. 流式输出
 
@@ -284,6 +304,7 @@ with urllib.request.urlopen(req) as resp:
 - [ ] 流式响应设置 `stream: true`
 - [ ] 启用 Thinking 模式使用 `chat_template_kwargs.enable_thinking: true`
 - [ ] 或 Anthropic 格式使用 `thinking.type: "enabled"`
+- [ ] 需要控制思考强度时，顶层加 `reasoning_effort`（`none`/`minimal`/`low`/`medium`/`high`/`xhigh`/`max`），默认不设置
 
 ## 相关文档
 
